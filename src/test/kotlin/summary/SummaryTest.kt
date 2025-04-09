@@ -2,6 +2,7 @@ package summary
 
 import org.example.model.FakeCategory
 import org.example.model.FakeTransaction
+import org.example.model.FakeTransactionType
 import org.example.model.Report
 import org.example.summary.Summary
 import java.time.LocalDate
@@ -21,7 +22,7 @@ fun main() {
         correctResult = Report(
             0.0,
             0.0,
-            emptyMap()
+            mutableMapOf()
         )
     )
 
@@ -31,7 +32,8 @@ fun main() {
             fakeTransactions = listOf(
                 FakeTransaction(
                     LocalDate.of(2025, 1, 8), 0.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             year = 2025
@@ -39,8 +41,8 @@ fun main() {
         correctResult = Report(
             0.0,
             0.0,
-            mapOf(
-                Pair(FakeCategory.SALARY, 0)
+            mutableMapOf(
+                Pair(FakeCategory.SALARY, 0.0)
             )
         )
     )
@@ -52,7 +54,8 @@ fun main() {
                 FakeTransaction(
                     LocalDate.of(2025, 4, 8)
              , 12_000.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             year = 2025
@@ -60,7 +63,7 @@ fun main() {
         correctResult = Report(
             expenses = 0.0,
             income = 12_000.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.SALARY, 12_000.0))
         )
     )
 
@@ -69,16 +72,17 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDate.of(2025, 4, 8,), -200.0,
-                    fakeCategory = FakeCategory.RENT
+                    LocalDate.of(2025, 4, 8,), 200.0,
+                    fakeCategory = FakeCategory.RENT,
+                    fakeTransactionType = FakeTransactionType.EXPENSE
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = -200.0,
+            expenses = 200.0,
             income = 0.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.RENT, -200))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.RENT, 200.0))
         )
     )
 
@@ -88,7 +92,8 @@ fun main() {
             fakeTransactions = listOf(
                 FakeTransaction(
                     LocalDate.of(2025, 4, 8,), 12_000.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             year = 2025
@@ -96,7 +101,7 @@ fun main() {
         correctResult = Report(
             expenses = 0.0,
             income = 12_000.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.SALARY, 12_000.0))
         )
     )
 
@@ -105,16 +110,17 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDate.of(2025, 4, 8, ), -2_000.0,
-                    fakeCategory = FakeCategory.RENT
+                    LocalDate.of(2025, 4, 8, ), 2_000.0,
+                    fakeCategory = FakeCategory.FOOD,
+                    fakeTransactionType = FakeTransactionType.EXPENSE
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = -2_000.0,
+            expenses = 2_000.0,
             income = 0.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.FOOD, -2_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.FOOD, 2_000.0))
         )
     )
 
@@ -126,7 +132,8 @@ fun main() {
             fakeTransactions = listOf(
                 FakeTransaction(
                     LocalDate.of(2025, 1, 8), 0.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             month = 1,
@@ -135,8 +142,8 @@ fun main() {
         correctResult = Report(
             0.0,
             0.0,
-            mapOf(
-                Pair(FakeCategory.SALARY, 0)
+            mutableMapOf(
+                Pair(FakeCategory.SALARY, 0.0)
             )
         )
 
@@ -148,7 +155,8 @@ fun main() {
             fakeTransactions = listOf(
                 FakeTransaction(
                     LocalDate.of(2025, 4, 8, ), 12_000.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             year = 2025,
@@ -157,7 +165,7 @@ fun main() {
         correctResult = Report(
             expenses = 0.0,
             income = 12_000.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.SALARY, 12_000.0))
         )
     )
 
@@ -166,17 +174,18 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDate.of(2025, 4, 8, ), -200.0,
-                    fakeCategory = FakeCategory.RENT
+                    LocalDate.of(2025, 4, 8, ), 200.0,
+                    fakeCategory = FakeCategory.RENT,
+                    fakeTransactionType = FakeTransactionType.EXPENSE
                 ),
             ),
             year = 2025,
             month = 4
         ),
         correctResult = Report(
-            expenses = -200.0,
+            expenses = 200.0,
             income = 0.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.RENT, -200))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.RENT, 200.0))
         )
     )
 
@@ -186,7 +195,8 @@ fun main() {
             fakeTransactions = listOf(
                 FakeTransaction(
                     LocalDate.of(2025, 4, 8, ), 12_000.0,
-                    fakeCategory = FakeCategory.SALARY
+                    fakeCategory = FakeCategory.SALARY,
+                    fakeTransactionType = FakeTransactionType.INCOME
                 ),
             ),
             year = 2025,
@@ -195,26 +205,40 @@ fun main() {
         correctResult = Report(
             expenses = 0.0,
             income = 12_000.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.SALARY, 12_000.0))
         )
     )
 
     checkReport(
-        name = "Should fail, When the wrong category is reported - Monthly",
+        name = "Should succeed, When the correct category is reported - Monthly",
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDate.of(2025, 4, 8, ), -2_000.0,
-                    fakeCategory = FakeCategory.RENT
+                    LocalDate.of(2025, 4, 8, ), 2_000.0,
+                    fakeCategory = FakeCategory.RENT,
+                    fakeTransactionType = FakeTransactionType.EXPENSE
                 ),
             ),
             year = 2025,
             month = 4
         ),
         correctResult = Report(
-            expenses = -2_000.0,
+            expenses = 2_000.0,
             income = 0.0,
-            fakeCategorySummaries = mapOf(Pair(FakeCategory.FOOD, -2_000))
+            fakeCategorySummaries = mutableMapOf(Pair(FakeCategory.RENT, 2_000.0))
+        )
+    )
+    checkReport(
+        name = "Should return empty report, When empty list is entered - Monthly",
+        result = summary.getByMonth(
+            fakeTransactions = emptyList(),
+            year = 2025,
+            month = 5
+        ),
+        correctResult = Report(
+            0.0,
+            0.0,
+            mutableMapOf()
         )
     )
 
