@@ -1,5 +1,6 @@
 package org.example
 
+import org.example.feature.TransactionOperations
 import java.time.LocalDateTime
 
 fun check(name: String, result: Boolean, correct: Boolean) {
@@ -19,16 +20,17 @@ fun checkList(name: String, actualSize: Int, expectedSize: Int) {
 }
 
 fun main() {
+    val transactionOperations = TransactionOperations()
 
     checkList(
         name = "Should return 0 transactions before adding any transaction",
-        actualSize = transactions.size,
+        actualSize = transactionOperations.transactions.size,
         expectedSize = 0
     )
 
     check(
         name = "Should return true when adding a new transaction",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = 1,
                 amount = 100.0,
@@ -44,7 +46,7 @@ fun main() {
 
     check(
         name = "Should return false when adding duplicate transaction ID",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = 1,
                 amount = 150.0,
@@ -60,7 +62,7 @@ fun main() {
 
     check(
         name = "Should return false when adding transaction with negative ID",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = -1,
                 amount = 100.0,
@@ -76,7 +78,7 @@ fun main() {
 
     check(
         name = "Should return false when adding transaction with negative amount",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = 4,
                 amount = 100.0,
@@ -91,7 +93,7 @@ fun main() {
 
     check(
         name = "Should return false when category is blank",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = 5,
                 amount = 100.0,
@@ -106,7 +108,7 @@ fun main() {
 
     check(
         name = "Should return false when amount is Nan",
-        result = addTransaction(
+        result = transactionOperations.addTransaction(
             Transaction(
                 id = 5,
                 amount = Double.NaN,
@@ -121,7 +123,7 @@ fun main() {
 
     checkList(
         name = "Should return 4 transactions after adding 4 valid and 1 duplicate",
-        actualSize = transactions.size,
+        actualSize = transactionOperations.transactions.size,
         expectedSize = 4
     )
 
