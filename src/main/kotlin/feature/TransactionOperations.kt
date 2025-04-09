@@ -11,6 +11,8 @@ class TransactionOperations {
         return true
     }
 
-
+    fun updateTransaction(id:Int, transaction: Transaction): Boolean {
+        return false
+    }
 
 }
