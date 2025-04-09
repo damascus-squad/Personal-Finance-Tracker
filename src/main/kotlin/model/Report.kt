@@ -1,8 +1,8 @@
 package org.example.model
 
 data class Report (
-    val income: Int,
-    val expenses: Int,
+    val income: Double,
+    val expenses: Double,
     val fakeCategorySummaries: Map<FakeCategory, Int>
 )
 

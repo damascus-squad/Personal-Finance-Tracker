@@ -4,6 +4,7 @@ import org.example.model.FakeCategory
 import org.example.model.FakeTransaction
 import org.example.model.Report
 import org.example.summary.Summary
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -18,8 +19,8 @@ fun main() {
             year = 2025
         ),
         correctResult = Report(
-            0,
-            0,
+            0.0,
+            0.0,
             emptyMap()
         )
     )
@@ -29,15 +30,15 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 1, 8, 15, 30), 0,
+                    LocalDate.of(2025, 1, 8), 0.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            0,
-            0,
+            0.0,
+            0.0,
             mapOf(
                 Pair(FakeCategory.SALARY, 0)
             )
@@ -49,15 +50,16 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), 12_000,
+                    LocalDate.of(2025, 4, 8)
+             , 12_000.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = 0,
-            income = 12_000,
+            expenses = 0.0,
+            income = 12_000.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
         )
     )
@@ -67,15 +69,15 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), -200,
+                    LocalDate.of(2025, 4, 8,), -200.0,
                     fakeCategory = FakeCategory.RENT
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = -200,
-            income = 0,
+            expenses = -200.0,
+            income = 0.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.RENT, -200))
         )
     )
@@ -85,15 +87,15 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), 12_000,
+                    LocalDate.of(2025, 4, 8,), 12_000.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = 0,
-            income = 12_000,
+            expenses = 0.0,
+            income = 12_000.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
         )
     )
@@ -103,15 +105,15 @@ fun main() {
         result = summary.getByYear(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), -2_000,
+                    LocalDate.of(2025, 4, 8, ), -2_000.0,
                     fakeCategory = FakeCategory.RENT
                 ),
             ),
             year = 2025
         ),
         correctResult = Report(
-            expenses = -2_000,
-            income = 0,
+            expenses = -2_000.0,
+            income = 0.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.FOOD, -2_000))
         )
     )
@@ -123,7 +125,7 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 1, 8, 15, 30), 0,
+                    LocalDate.of(2025, 1, 8), 0.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
@@ -131,8 +133,8 @@ fun main() {
             year = 2025
         ),
         correctResult = Report(
-            0,
-            0,
+            0.0,
+            0.0,
             mapOf(
                 Pair(FakeCategory.SALARY, 0)
             )
@@ -145,7 +147,7 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), 12_000,
+                    LocalDate.of(2025, 4, 8, ), 12_000.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
@@ -153,8 +155,8 @@ fun main() {
             month = 4
         ),
         correctResult = Report(
-            expenses = 0,
-            income = 12_000,
+            expenses = 0.0,
+            income = 12_000.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
         )
     )
@@ -164,7 +166,7 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), -200,
+                    LocalDate.of(2025, 4, 8, ), -200.0,
                     fakeCategory = FakeCategory.RENT
                 ),
             ),
@@ -172,8 +174,8 @@ fun main() {
             month = 4
         ),
         correctResult = Report(
-            expenses = -200,
-            income = 0,
+            expenses = -200.0,
+            income = 0.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.RENT, -200))
         )
     )
@@ -183,7 +185,7 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), 12_000,
+                    LocalDate.of(2025, 4, 8, ), 12_000.0,
                     fakeCategory = FakeCategory.SALARY
                 ),
             ),
@@ -191,8 +193,8 @@ fun main() {
             month = 4
         ),
         correctResult = Report(
-            expenses = 0,
-            income = 12_000,
+            expenses = 0.0,
+            income = 12_000.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.SALARY, 12_000))
         )
     )
@@ -202,7 +204,7 @@ fun main() {
         result = summary.getByMonth(
             fakeTransactions = listOf(
                 FakeTransaction(
-                    LocalDateTime.of(2025, 4, 8, 15, 30), -2_000,
+                    LocalDate.of(2025, 4, 8, ), -2_000.0,
                     fakeCategory = FakeCategory.RENT
                 ),
             ),
@@ -210,8 +212,8 @@ fun main() {
             month = 4
         ),
         correctResult = Report(
-            expenses = -2_000,
-            income = 0,
+            expenses = -2_000.0,
+            income = 0.0,
             fakeCategorySummaries = mapOf(Pair(FakeCategory.FOOD, -2_000))
         )
     )

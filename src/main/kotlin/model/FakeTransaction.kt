@@ -1,9 +1,9 @@
 package org.example.model
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 class FakeTransaction (
-    val date: LocalDateTime,
-    val amount: Int,
+    val date: LocalDate,
+    val amount: Double,
     val fakeCategory: FakeCategory
 ) {
 
