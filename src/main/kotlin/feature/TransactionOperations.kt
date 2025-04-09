@@ -20,6 +20,9 @@ class TransactionOperations {
         return true
     }
 
+    fun updateTransaction(id:Int, transaction: Transaction): Boolean {
+        return false
+    }
     fun displayAllTransactions() {
         if (transactions.isEmpty()) {
             println("No transactions found.")
