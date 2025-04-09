@@ -81,7 +81,7 @@ fun main() {
         result = transactionOperations.addTransaction(
             Transaction(
                 id = 4,
-                amount = 100.0,
+                amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
                 category = "Food",
@@ -122,9 +122,9 @@ fun main() {
     )
 
     checkList(
-        name = "Should return 4 transactions after adding 4 valid and 1 duplicate",
+        name = "Should return 1 transactions after adding 4 invalid and 1 valid",
         actualSize = transactionOperations.transactions.size,
-        expectedSize = 4
+        expectedSize = 1
     )
 
 }
