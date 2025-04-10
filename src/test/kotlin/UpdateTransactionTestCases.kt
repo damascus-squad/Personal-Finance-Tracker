@@ -2,14 +2,15 @@ package org.example
 
 import org.example.feature.TransactionOperations
 import java.time.LocalDateTime
+import java.util.*
 
 fun main(){
     val transactionOperations = TransactionOperations()
     checkUpdate(
         name = "Should return false when id is not exist",
-        expectedResult = transactionOperations.updateTransaction(99,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 99,
+                id = UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -22,9 +23,9 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when amount is non positive",
-        expectedResult = transactionOperations.updateTransaction(1,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -37,9 +38,9 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when category is not in the list",
-        expectedResult = transactionOperations.updateTransaction(1,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -52,9 +53,9 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when transactionType valid",
-        expectedResult = transactionOperations.updateTransaction(1,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -67,9 +68,9 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when category is not in Category list",
-        expectedResult = transactionOperations.updateTransaction(1,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -82,9 +83,9 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when date is valid",
-        expectedResult = transactionOperations.updateTransaction(1,
+        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,

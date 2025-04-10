@@ -2,6 +2,7 @@ package org.example
 
 import org.example.feature.TransactionOperations
 import java.time.LocalDateTime
+import java.util.*
 
 fun check(name: String, result: Boolean, correct: Boolean) {
     if (result == correct) {
@@ -32,7 +33,7 @@ fun main() {
         name = "Should return true when adding a new transaction",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = 1,
+                id =  UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
@@ -48,7 +49,7 @@ fun main() {
         name = "Should return false when adding duplicate transaction ID",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = 1,
+                id = UUID.randomUUID(),
                 amount = 150.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
@@ -64,7 +65,7 @@ fun main() {
         name = "Should return false when adding transaction with negative ID",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = -1,
+                id = UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
@@ -80,7 +81,7 @@ fun main() {
         name = "Should return false when adding transaction with negative amount",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = 4,
+                id = UUID.randomUUID(),
                 amount = -100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
@@ -95,7 +96,7 @@ fun main() {
         name = "Should return false when category is blank",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = 5,
+                id = UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
@@ -110,7 +111,7 @@ fun main() {
         name = "Should return false when amount is Nan",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = 5,
+                id = UUID.randomUUID(),
                 amount = Double.NaN,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
