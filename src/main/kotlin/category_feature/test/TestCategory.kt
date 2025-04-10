@@ -1,23 +1,23 @@
 package category_feature.test
 
-import category_feature.feature.CategoryManager
+import category_feature.feature.CategoryManagerImpl
 class TestCategory() {
     fun test() {
-        val categoryManager = CategoryManager(listOf("Food", "Transport", "Entertainment"))
-        println("Categories :\n${categoryManager.displayCategories()}")
+        val categoryManagerImpl = CategoryManagerImpl(listOf("Food", "Transport", "Entertainment"))
+        println("Categories :\n${categoryManagerImpl.getCategories()}")
 
 //region add Category
         // Test adding a new category
         checkCategory(
             "Should return true when adding Category",
-            categoryManager.addCategory("Salary"),
+            categoryManagerImpl.add("Salary"),
             true
         )
 
         // Test adding an existing category (ensure that the category is not added again)
         checkCategory(
             "Should return false when adding duplicate Category",
-            categoryManager.addCategory("Food"),
+            categoryManagerImpl.add("Food"),
             false
         )
 //endregion
@@ -26,14 +26,14 @@ class TestCategory() {
         // Test updating an existing category
         checkCategory(
             "Should return true when updating Category",
-            categoryManager.updateCategory("Transport", "Rent"),
+            categoryManagerImpl.update("Transport", "Rent"),
             true
         )
 
         // Test trying to update a non-existing category
         checkCategory(
             "Should return false when updating non-existing category",
-            categoryManager.updateCategory("Housing", "Luxury"),
+            categoryManagerImpl.update("Housing", "Luxury"),
             false
         )
 //endregion
@@ -42,14 +42,14 @@ class TestCategory() {
         // Test deleting an existing category
         checkCategory(
             "Should return true when deleting Category",
-            categoryManager.deleteCategory("Food"),
+            categoryManagerImpl.delete(1),
             true
         )
 
         // Test trying to delete a non-existing category
         checkCategory(
             "Should return false when deleting non-existing category",
-            categoryManager.deleteCategory("Housing"),
+            categoryManagerImpl.delete(1),
             false
         )
 //endregion
@@ -58,14 +58,14 @@ class TestCategory() {
         // Test checking if an existing category exists
         checkCategory(
             "Should return true when checking if Category exists",
-            categoryManager.checkExists("Rent"),
+            categoryManagerImpl.checkExists("Rent"),
             true
         )
 
         // Test checking if a non-existing category exists
         checkCategory(
             "Should return false when checking if non-existing Category exists",
-            categoryManager.checkExists("Housing"),
+            categoryManagerImpl.checkExists("Housing"),
             false
         )
 //endregion

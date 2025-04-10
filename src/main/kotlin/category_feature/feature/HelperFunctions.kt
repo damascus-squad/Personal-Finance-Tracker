@@ -2,20 +2,6 @@ package category_feature.feature
 
 class CategoryHelper {
 
-    fun selectCategory(manager: CategoryManager) {
-        val categories = manager.displayCategories().lines().filter { it.isNotBlank() }
-        categories.forEach { println(it) }
-
-        print("Enter the category number to select: ")
-        val categoryNumber = readlnOrNull()?.toIntOrNull()
-
-        if (categoryNumber != null && categoryNumber in 1..categories.size) {
-            println("You selected: ${categories[categoryNumber - 1]}")
-        } else {
-            println("Invalid category number.")
-        }
-    }
-
     fun addCategory(manager: CategoryManager) {
         print("Enter category name to add: ")
         val categoryName = readlnOrNull()?.trim()
@@ -25,7 +11,7 @@ class CategoryHelper {
                 return
             }
 
-            val result = manager.addCategory(categoryName)
+            val result = manager.add(categoryName)
             println(if (result) "Category '$categoryName' added successfully." else "Category already exists.")
         } else {
             println("Invalid category name.")
@@ -34,24 +20,37 @@ class CategoryHelper {
 
 
     fun updateCategory(manager: CategoryManager) {
-        print("Enter old category name: ")
-        val oldName = readlnOrNull()?.trim()
+        val categories = manager.getCategories().lines().filter { it.isNotBlank() }
+        categories.forEach { println(it) }
+
+        print("Enter the category ID to update: ")
+        val idToUpdate = readlnOrNull()?.toIntOrNull()
+
+        if (idToUpdate == null) {
+            println("Invalid input. Please enter a valid number.")
+            return
+        }
+
+        val oldCategory = manager.getCategoryById(idToUpdate)
+        if (oldCategory == null) {
+            println("Category with ID $idToUpdate not found.")
+            return
+        }
+
         print("Enter new category name: ")
         val newName = readlnOrNull()?.trim()
 
-        if (!oldName.isNullOrEmpty() && !newName.isNullOrEmpty()) {
+        if (!newName.isNullOrEmpty()) {
             if (!isValidCategoryName(newName)) {
                 println("Invalid new name. Only letters are allowed, no numbers or symbols.")
                 return
             }
 
-            when {
-                !manager.checkExists(oldName) -> println("Error: '$oldName' does not exist.")
-                manager.checkExists(newName) -> println("Error: '$newName' already exists.")
-                else -> {
-                    manager.updateCategory(oldName, newName)
-                    println("Updated successfully.")
-                }
+            if (manager.checkExists(newName)) {
+                println("Error: '$newName' already exists.")
+            } else {
+                manager.update(oldCategory.name, newName)
+                println("Updated successfully.")
             }
         } else {
             println("Invalid input.")
@@ -60,17 +59,23 @@ class CategoryHelper {
 
 
     fun deleteCategory(manager: CategoryManager) {
-        print("Enter category name to delete: ")
-        val name = readlnOrNull()?.trim()
-        if (!name.isNullOrEmpty()) {
-            val result = manager.deleteCategory(name)
-            println(if (result) "Category deleted." else "Category not found.")
-        } else {
-            println("Invalid category name.")
+        val categories = manager.getCategories().lines().filter { it.isNotBlank() }
+        categories.forEach { println(it) }
+
+        print("Enter the category ID to delete: ")
+        val idToDelete = readlnOrNull()?.toIntOrNull()
+
+        if (idToDelete == null) {
+            println("Invalid input. Please enter a valid number.")
+            return
         }
+
+        val result = manager.delete(idToDelete)
+        println(if (result) "Category deleted." else "Category with ID $idToDelete not found.")
     }
 
-    fun checkCategory(manager: CategoryManager) {
+
+    fun checkCategory(manager: CategoryManagerImpl) {
         print("Enter category name to check: ")
         val name = readlnOrNull()?.trim()
         if (!name.isNullOrEmpty()) {
