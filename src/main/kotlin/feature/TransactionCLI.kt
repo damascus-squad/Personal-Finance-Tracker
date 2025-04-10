@@ -1,43 +1,53 @@
 package org.example.feature
-
 import org.example.Transaction
 import org.example.TransactionType
 import java.time.LocalDateTime
+import java.util.*
 
 fun runCLI(service: TransactionService){
     while (true) {
         println(
-            """===== Personal Finance CLI=====
-            1. Add Transaction
-            2. Edit Transaction
-            3. Delete Transaction
-            4. List All Transactions
-            5. Exit
-            ==================================
-        """.trimMargin()
+            """
+          ===== Personal Finance CLI=====
+          1. Add Transaction
+          2. Edit Transaction
+          3. Delete Transaction
+          4. List All Transactions
+          5. Exit
+          ==================================
+      """.trimMargin()
         )
-
         print("Choose an option: ")
         when (readlnOrNull()?.trim()) {
             "1" -> addTransaction(service)
             "2" -> editTransaction(service)
             "3" -> deleteTransaction(service)
-            "4" -> getAllTransactions(service)
+            "4" -> displayAllTransactions(service)
             "5" -> {
                 println("Exiting... Goodbye!")
                 return
             }
             else -> println("❌ Invalid choice!")
         }
+        while (true) {
+            println(
+                """
+          Do You Want to:
+          1. Continue
+          2. Exit
+      """.trimIndent()
+            )
+            when (readlnOrNull()?.trim()) {
+                "1" -> break
+                "2" -> return
+                else -> println("❌ Invalid choice! Please enter 1 or 2.")
+            }
+        }
     }
-
 }
 
 fun addTransaction(service: TransactionService) {
-    val id = 1
-
     var amount: Double? = null
-    print("Enter amount: ")
     while (amount == null || amount <= 0) {
         print("Enter amount (must be positive): ")
         amount = readlnOrNull()?.toDoubleOrNull()
@@ -46,14 +56,12 @@ fun addTransaction(service: TransactionService) {
         }
     }
 
-
     var transactionType:TransactionType? = null
     while (transactionType == null) {
         println("Select transaction type:")
         println("1. INCOME")
         println("2. EXPENSE")
         print("Enter choice (1 or 2): ")
-
         when (readlnOrNull()?.trim()) {
             "1" -> transactionType = TransactionType.INCOME
             "2" -> transactionType = TransactionType.EXPENSE
@@ -61,7 +69,7 @@ fun addTransaction(service: TransactionService) {
         }
     }
 
-    print("Enter category: ")
+   print("Enter category: ")
     var category = readln()
     while (category.isBlank()) {
         println("❌ Category is required. Please Enter Category")
@@ -72,7 +80,7 @@ fun addTransaction(service: TransactionService) {
     val description = readlnOrNull()
 
     val transaction = Transaction(
-        id = id,
+        id = UUID.randomUUID(),
         amount = amount,
         transactionType = transactionType,
         date = LocalDateTime.now(),
@@ -88,67 +96,134 @@ fun addTransaction(service: TransactionService) {
 }
 
 fun editTransaction(service: TransactionService) {
-    println("Choose transaction to update: ")
-    getAllTransactions(service)
-
-    val id = readlnOrNull()?.toIntOrNull() ?: return println("❌ Invalid ID.")
-
-    val existing = service.getTransactionById(id)
-    if (existing == null) {
-        println("❌ Transaction not found.")
+    val transactions = service.getAllTransactions()
+    if (transactions.isEmpty()) {
+        println("❌ No transactions found.")
+        println("Select Your option Again ")
         return
     }
+    displayAllTransactions(service)
 
-    print("Enter new amount: ")
-    val amount = readlnOrNull()?.toDoubleOrNull()
-    if (amount == null || amount <= 0) {
-        println("❌ Invalid amount.")
-        return
+    println("Enter the number of the transaction you want to edit:")
+    var index = readlnOrNull()?.toIntOrNull()?.minus(1)
+
+    while (index == null || index !in transactions.indices) {
+        println("❌ Invalid selection. Please Enter Number from the selection list ")
+        index = readlnOrNull()?.toIntOrNull()?.minus(1)
     }
+    val existingTransaction = transactions[index]
+    var updated = existingTransaction.copy()
+    var choice: Int? = null
+    while (true) {
+        println(
+            """
+      Choose the field you want to edit:
+      1. Amount
+      2. Transaction Type
+      3. Category
+      4. Description
+      5. finish Editing
+  """.trimIndent()
+        )
 
-    print("Enter new category: ")
-    val category = readlnOrNull().orEmpty()
-    if (category.isBlank()) {
-        println("❌ Category is required.")
-        return
-    }
+        choice = readlnOrNull()?.toIntOrNull()
 
-    print("Enter new description (optional): ")
-    val description = readlnOrNull()
+        when (choice) {
+            1 -> {
+                print("Enter new amount: ")
+                val newAmount = readlnOrNull()?.toDoubleOrNull()
+                if (newAmount != null && newAmount > 0) {
+                    updated = updated.copy(amount = newAmount)
+                    service.updateTransaction(existingTransaction.id, updated)
+                    println("✅ Amount updated.")
+                } else println("❌ Invalid amount.")
+            }
 
-    val updated = existing.copy(
-        amount = amount,
-        category = category,
-        description = description
-    )
+            2 -> {
+                println("Select transaction type:")
+                println("1. INCOME")
+                println("2. EXPENSE")
+                when (readlnOrNull()?.trim()) {
+                    "1" -> {
+                        updated = updated.copy(transactionType = TransactionType.INCOME)
+                        service.updateTransaction(existingTransaction.id, updated)
+                        println("✅ Transaction type updated.")
+                    }
+                    "2" -> {
+                        updated = updated.copy(transactionType = TransactionType.EXPENSE)
+                        service.updateTransaction(existingTransaction.id, updated)
+                        println("✅ Transaction type updated.")
+                    }
+                    else -> println("❌ Invalid type.")
+                }
+            }
+            3 -> {
+                print("Enter new category: ")
+                val newCategory = readlnOrNull()?.trim()
+                if (!newCategory.isNullOrEmpty()) {
+                    updated = updated.copy(category = newCategory)
+                    service.updateTransaction(existingTransaction.id, updated)
+                    println("✅ Category updated.")
+                } else println("❌ Invalid category.")
+            }
+            4 -> {
+                print("Enter new description: ")
+                val newDescription = readlnOrNull()?.trim()
+                updated = updated.copy(description = newDescription)
+                service.updateTransaction(existingTransaction.id, updated)
+                println("✅ Description updated.")
+            }
+            5 -> {
+                println("Transaction editing finished.")
+                break
+            }
 
-    if (service.updateTransaction(id, updated)) {
-        println("✅ Transaction updated.")
-    } else {
-        println("❌ Failed to update transaction.")
+            else -> println("❌ Invalid choice, try again")
+
+
+        }
     }
 }
 
-fun deleteTransaction(service: TransactionService) {
-    print("Enter ID to delete: ")
-    val id = readLine()?.toIntOrNull() ?: return println("❌ Invalid ID.")
 
-    if (service.deleteTransaction(id)) {
+fun deleteTransaction(service: TransactionService) {
+    val transactions = service.getAllTransactions()
+
+    if (transactions.isEmpty()) {
+        println("❌ No transactions found.")
+        println("Select Your option Again ")
+        return
+    }
+
+    displayAllTransactions(service)
+    println("Enter the number of the Transaction you want to Delete:")
+    var index = readlnOrNull()?.toIntOrNull()?.minus(1)
+
+    while (index == null || index !in transactions.indices) {
+        println("❌ Invalid selection. Please Enter Number from the selection list ")
+        index = readlnOrNull()?.toIntOrNull()?.minus(1)
+    }
+
+    val existingTransaction = transactions[index]
+
+    if (service.deleteTransaction(existingTransaction.id)) {
         println("✅ Transaction deleted.")
     } else {
         println("❌ Transaction not found.")
     }
 }
 
-fun getAllTransactions(service: TransactionService) {
+
+
+
+fun displayAllTransactions(service: TransactionService) {
     val transactions = service.getAllTransactions()
     if (transactions.isEmpty()) {
         println("No transactions found.")
         return
     }
-
     println("=== All Transactions ===")
-    for (t in transactions) {
-        println(" $t. | Amount: ${t.amount} | Type: ${t.transactionType} | Category: ${t.category} | Date: ${t.date} | Desc: ${t.description}")
+    transactions.forEachIndexed {index, transaction->
+        println("${index+1}. ID: ${transaction.id}. | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category} | Date: ${transaction.date} | Desc: ${transaction.description}")
     }
 }
