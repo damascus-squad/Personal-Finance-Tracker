@@ -1,39 +1,36 @@
 package org.example.feature
 
 import org.example.Transaction
+import java.util.UUID
 
-class TransactionOperations {
+class TransactionOperations: TransactionService {
 
     val transactions = mutableListOf<Transaction>()
     // val transactions: List<Transaction> get() = _transactions
 
-    fun addTransaction(transaction: Transaction): Boolean {
-        if (transaction.id < 0) return false
+    override fun getTransactionById(id: UUID): Transaction? {
+        return transactions.find { it.id == id }
+    }
 
-        if (transaction.amount <= 0.0 || transaction.amount.isNaN()) return false
-
-        if (transaction.category.isBlank()) return false
-
-        if (transactions.any { it.id == transaction.id }) return false
-
+    override fun addTransaction(transaction: Transaction): Boolean {
         transactions.add(transaction)
         return true
     }
 
-    fun updateTransaction(id:Int, transaction: Transaction): Boolean {
-        return false
-    }
-    fun displayAllTransactions() {
-        if (transactions.isEmpty()) {
-            println("No transactions found.")
-        } else {
-            transactions.forEach { transaction ->
-                println(
-                    "Transaction ${transaction.id} : at ${transaction.date} - with amount ${transaction.amount}$ " +
-                            "- Category: ${transaction.category} - Description: ${transaction.description}"
-                )
-            }
-        }
+    override fun updateTransaction(id: UUID, transaction: Transaction): Boolean {
+        val index = transactions.indexOfFirst { it.id == id}
+
+        if (index != -1) transactions[index] = transaction
+
+        return true
     }
 
+    override fun deleteTransaction(id: UUID): Boolean {
+        val transaction = transactions.find { it.id == id } ?: return false
+        return transactions.remove(transaction)
+    }
+
+    override fun getAllTransactions(): List<Transaction> {
+        return transactions.toList()
+    }
 }
