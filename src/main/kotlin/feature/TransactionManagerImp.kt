@@ -3,9 +3,8 @@ package org.example.feature
 import org.example.Transaction
 import java.util.UUID
 
-class TransactionManagerImplementation: TransactionManager {
-
-    val transactions = mutableListOf<Transaction>()
+class TransactionMangerImp: TransactionManager {
+    private val transactions = mutableListOf<Transaction>()
     // val transactions: List<Transaction> get() = _transactions
 
     override fun getTransactionById(id: UUID): Transaction? {
