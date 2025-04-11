@@ -19,10 +19,9 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
         }
     }
 
-    override fun update(oldName: String, newName: String): Boolean {
-        val lowerOld = oldName.lowercase(Locale.getDefault())
+    override fun update(id: Int, newName: String): Boolean {
         val lowerNew = newName.lowercase(Locale.getDefault())
-        val category = categories.find { it.name == lowerOld }
+        val category = categories.find { it.id == id }
 
         return if (category != null) {
             val index = categories.indexOf(category)

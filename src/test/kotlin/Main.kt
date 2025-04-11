@@ -1,8 +1,11 @@
+import test.TestCategory
 import util.runAllCheckTests
 
 fun main() {
     val isAllTestCasedPassed = runAllCheckTests(
-        listOf<Any>()
+        listOf(
+            TestCategory()
+        )
     )
 
     if (!isAllTestCasedPassed) {

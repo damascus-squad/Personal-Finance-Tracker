@@ -49,8 +49,8 @@ object CategoryHelper {
             if (manager.checkExists(newName)) {
                 println("Error: '$newName' already exists.")
             } else {
-                manager.update(oldCategory.name, newName)
-                println("Updated successfully.")
+                val result = manager.update(idToUpdate, newName)
+                println(if (result) "Updated successfully." else "Update failed.")
             }
         } else {
             println("Invalid input.")

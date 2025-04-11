@@ -4,7 +4,7 @@ import category_feature.model.Category
 
 interface CategoryManager {
     fun add(name: String): Boolean
-    fun update(oldName: String, newName: String): Boolean
+    fun update(id: Int, newName: String): Boolean
     fun delete(id: Int): Boolean
     fun checkExists(name: String): Boolean
     fun getCategories(): List<Category>
