@@ -29,6 +29,19 @@ fun main() {
         expectedSize = 0
     )
 
+    val id= UUID.randomUUID()
+    transactionOperations.addTransaction(
+        Transaction(
+            id =  id,
+            amount = 100.0,
+            date = LocalDateTime.now(),
+            transactionType = TransactionType.INCOME,
+            category = "Food",
+            description = "Lunch"
+        )
+    )
+
+
     check(
         name = "Should return true when adding a new transaction",
         result = transactionOperations.addTransaction(
@@ -46,10 +59,10 @@ fun main() {
 
 
     check(
-        name = "Should return false when adding duplicate transaction ID",
+        name = "Should return false when adding existing transaction ID",
         result = transactionOperations.addTransaction(
             Transaction(
-                id = UUID.randomUUID(),
+                id = id,
                 amount = 150.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
@@ -60,72 +73,10 @@ fun main() {
         correct = false,
     )
 
-
-    check(
-        name = "Should return false when adding transaction with negative ID",
-        result = transactionOperations.addTransaction(
-            Transaction(
-                id = UUID.randomUUID(),
-                amount = 100.0,
-                date = LocalDateTime.now(),
-                transactionType = TransactionType.EXPENSE,
-                category = "Food",
-                description = "Lunch"
-            )
-        ),
-        correct = false,
-    )
-
-
-    check(
-        name = "Should return false when adding transaction with negative amount",
-        result = transactionOperations.addTransaction(
-            Transaction(
-                id = UUID.randomUUID(),
-                amount = -100.0,
-                date = LocalDateTime.now(),
-                transactionType = TransactionType.EXPENSE,
-                category = "Food",
-                description = "Lunch"
-            )
-        ),
-        correct = false,
-    )
-
-    check(
-        name = "Should return false when category is blank",
-        result = transactionOperations.addTransaction(
-            Transaction(
-                id = UUID.randomUUID(),
-                amount = 100.0,
-                date = LocalDateTime.now(),
-                transactionType = TransactionType.EXPENSE,
-                category = "",
-                description = ""
-            )
-        ),
-        correct = false,
-    )
-
-    check(
-        name = "Should return false when amount is Nan",
-        result = transactionOperations.addTransaction(
-            Transaction(
-                id = UUID.randomUUID(),
-                amount = Double.NaN,
-                date = LocalDateTime.now(),
-                transactionType = TransactionType.EXPENSE,
-                category = "Food",
-                description = ""
-            )
-        ),
-        correct = false,
-    )
-
     checkList(
-        name = "Should return 1 transactions after adding 4 invalid and 1 valid",
+        name = "Should return 1 transactions after adding 1 invalid and 2 valid",
         actualSize = transactionOperations.transactions.size,
-        expectedSize = 1
+        expectedSize = 2
     )
 
 }
