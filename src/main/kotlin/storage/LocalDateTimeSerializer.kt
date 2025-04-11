@@ -6,7 +6,9 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
@@ -26,8 +28,8 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
             LocalDateTime.parse(str, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         } catch (e: Exception) {
             LocalDateTime.of(
-                java.time.LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE),
-                java.time.LocalTime.MIDNIGHT
+                LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE),
+                LocalTime.MIDNIGHT
             )
         }
     }

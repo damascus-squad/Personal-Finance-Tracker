@@ -9,7 +9,7 @@ class JsonFileStorage<T>(
     private val serializer: KSerializer<List<T>>
 ) : FileStorage<T> {
 
-    override fun saveAndAppend(newData: List<T>) {
+    override fun save(newData: List<T>) {
         val existingData = load()
         val combinedData = existingData + newData
         val json = Json.encodeToString(serializer, combinedData)
