@@ -13,16 +13,25 @@ class TransactionOperations: TransactionService {
     }
 
     override fun addTransaction(transaction: Transaction): Boolean {
-        transactions.add(transaction)
-        return true
+        val exists = transactions.any { it.id == transaction.id }
+
+        if (!exists) {
+            transactions.add(transaction)
+            return true
+        }
+
+        return false
     }
 
     override fun updateTransaction(id: UUID, transaction: Transaction): Boolean {
-        val index = transactions.indexOfFirst { it.id == id}
+        val index = transactions.indexOfFirst { it.id == id }
 
-        if (index != -1) transactions[index] = transaction
+        if (index != -1) {
+            transactions[index] = transaction
+            return true
+        }
 
-        return true
+        return false
     }
 
     override fun deleteTransaction(id: UUID): Boolean {
