@@ -4,17 +4,18 @@ import org.example.TransactionType
 import java.time.LocalDateTime
 import java.util.*
 
+
 fun runCLI(service: TransactionService){
     while (true) {
         println(
             """
-          ===== Personal Finance CLI=====
-          1. Add Transaction
-          2. Edit Transaction
-          3. Delete Transaction
-          4. List All Transactions
-          5. Exit
-          ==================================
+===== Personal Finance CLI=====
+1. Add Transaction
+2. Edit Transaction
+3. Delete Transaction
+4. List All Transactions
+5. Exit
+==================================
       """.trimMargin()
         )
         print("Choose an option: ")
@@ -29,22 +30,12 @@ fun runCLI(service: TransactionService){
             }
             else -> println("❌ Invalid choice!")
         }
-        while (true) {
-            println(
-                """
-          Do You Want to:
-          1. Continue
-          2. Exit
-      """.trimIndent()
-            )
-            when (readlnOrNull()?.trim()) {
-                "1" -> break
-                "2" -> return
-                else -> println("❌ Invalid choice! Please enter 1 or 2.")
-            }
-        }
+
+
+
     }
-}
+    }
+
 
 fun addTransaction(service: TransactionService) {
     var amount: Double? = null
