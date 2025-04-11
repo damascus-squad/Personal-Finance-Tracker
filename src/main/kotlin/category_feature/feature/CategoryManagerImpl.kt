@@ -34,12 +34,9 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
     }
 
     override fun delete(id: Int): Boolean {
-        val category = categories.find { it.id == id }
-        return if (category != null) {
-            categories.remove(category)
-            categories.forEachIndexed { index, cat ->
-                categories[index] = cat.copy(id = index + 1)
-            }
+        val index = id - 1
+        return if (index in categories.indices) {
+            categories.removeAt(index)
             true
         } else {
             false
@@ -50,8 +47,10 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
         return categories.any { it.name == name.lowercase(Locale.getDefault()) }
     }
 
-    override fun getCategories(): String {
-        return categories.joinToString("\n") { "[${it.id}] ${it.name}" }
+    override fun getCategories(): List<Category> {
+        return categories.mapIndexed { index, cat ->
+            cat.copy(id = index + 1)
+        }
     }
 
     private fun List<String>.toCategoryList(): MutableList<Category> {

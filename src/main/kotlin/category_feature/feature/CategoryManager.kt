@@ -7,7 +7,7 @@ interface CategoryManager {
     fun update(oldName: String, newName: String): Boolean
     fun delete(id: Int): Boolean
     fun checkExists(name: String): Boolean
-    fun getCategories(): String
+    fun getCategories(): List<Category>
     fun getCategoryById(id: Int): Category?
 
 }

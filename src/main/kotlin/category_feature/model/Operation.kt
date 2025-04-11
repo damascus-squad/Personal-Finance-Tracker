@@ -4,7 +4,7 @@ enum class Operation(val description: String) {
     ADD_CATEGORY("Add Category"),
     UPDATE_CATEGORY("Update Category"),
     DELETE_CATEGORY("Delete Category"),
-    CHECK_EXISTS("Check if Category exists"),
+    CHECK_EXISTS("Check If Category Exists"),
     DISPLAY_CATEGORIES("Display Categories"),
-    EXIT("Back to Main Menu")
+    BACK("Back To Main Menu")
 }

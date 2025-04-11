@@ -1,6 +1,6 @@
 package category_feature.feature
 
-class CategoryHelper {
+object CategoryHelper {
 
     fun addCategory(manager: CategoryManager) {
         print("Enter category name to add: ")
@@ -20,8 +20,8 @@ class CategoryHelper {
 
 
     fun updateCategory(manager: CategoryManager) {
-        val categories = manager.getCategories().lines().filter { it.isNotBlank() }
-        categories.forEach { println(it) }
+        val categories = manager.getCategories()
+        categories.forEach { println("[${it.id}] ${it.name}") }
 
         print("Enter the category ID to update: ")
         val idToUpdate = readlnOrNull()?.toIntOrNull()
@@ -59,8 +59,8 @@ class CategoryHelper {
 
 
     fun deleteCategory(manager: CategoryManager) {
-        val categories = manager.getCategories().lines().filter { it.isNotBlank() }
-        categories.forEach { println(it) }
+        val categories = manager.getCategories()
+        categories.forEach { println("[${it.id}] ${it.name}") }
 
         print("Enter the category ID to delete: ")
         val idToDelete = readlnOrNull()?.toIntOrNull()
