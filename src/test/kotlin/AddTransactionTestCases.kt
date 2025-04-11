@@ -1,6 +1,6 @@
 package org.example
 
-import org.example.feature.TransactionOperations
+import org.example.feature.TransactionManagerImplementation
 import java.time.LocalDateTime
 import java.util.*
 
@@ -21,22 +21,22 @@ fun checkList(name: String, actualSize: Int, expectedSize: Int) {
 }
 
 fun main() {
-    val transactionOperations = TransactionOperations()
+    val transactionManagerImplementation = TransactionManagerImplementation()
 
     checkList(
         name = "Should return 0 transactions before adding any transaction",
-        actualSize = transactionOperations.transactions.size,
+        actualSize = transactionManagerImplementation.transactions.size,
         expectedSize = 0
     )
 
     val id= UUID.randomUUID()
-    transactionOperations.addTransaction(
+    transactionManagerImplementation.addTransaction(
         Transaction(
             id =  id,
             amount = 100.0,
             date = LocalDateTime.now(),
             transactionType = TransactionType.INCOME,
-            category = "Food",
+            category = Category(1,"Food"),
             description = "Lunch"
         )
     )
@@ -44,13 +44,13 @@ fun main() {
 
     check(
         name = "Should return true when adding a new transaction",
-        result = transactionOperations.addTransaction(
+        result = transactionManagerImplementation.addTransaction(
             Transaction(
                 id =  UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
-                category = "Food",
+                category = Category(1,"Food"),
                 description = "Lunch"
             )
         ),
@@ -60,13 +60,13 @@ fun main() {
 
     check(
         name = "Should return false when adding existing transaction ID",
-        result = transactionOperations.addTransaction(
+        result = transactionManagerImplementation.addTransaction(
             Transaction(
                 id = id,
                 amount = 150.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
-                category = "Food",
+                category = Category(1,"Food"),
                 description = "Lunch"
             )
         ),
@@ -75,7 +75,7 @@ fun main() {
 
     checkList(
         name = "Should return 1 transactions after adding 1 invalid and 2 valid",
-        actualSize = transactionOperations.transactions.size,
+        actualSize = transactionManagerImplementation.transactions.size,
         expectedSize = 2
     )
 

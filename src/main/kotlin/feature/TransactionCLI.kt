@@ -19,10 +19,7 @@ val categories = listOf(
 )
 
 
-fun runCLI(service: TransactionService){
-
-
-
+fun runCLI(service: TransactionManager){
     while (true) {
         println(
             """
@@ -54,7 +51,7 @@ fun runCLI(service: TransactionService){
     }
 
 
-fun addTransaction(service: TransactionService) {
+fun addTransaction(service: TransactionManager) {
     var amount: Double? = null
     while (amount == null || amount <= 0) {
         print("Enter amount (must be positive): ")
@@ -116,7 +113,7 @@ fun addTransaction(service: TransactionService) {
     }
 }
 
-fun editTransaction(service: TransactionService) {
+fun editTransaction(service: TransactionManager) {
     val transactions = service.getAllTransactions()
     if (transactions.isEmpty()) {
         println("❌ No transactions found.")
@@ -217,7 +214,7 @@ fun editTransaction(service: TransactionService) {
 }
 
 
-fun deleteTransaction(service: TransactionService) {
+fun deleteTransaction(service: TransactionManager) {
     val transactions = service.getAllTransactions()
 
     if (transactions.isEmpty()) {
@@ -245,7 +242,7 @@ fun deleteTransaction(service: TransactionService) {
 }
 
 
-fun displayAllTransactions(service: TransactionService) {
+fun displayAllTransactions(service: TransactionManager) {
     val transactions = service.getAllTransactions()
     if (transactions.isEmpty()) {
         println("No transactions found.")

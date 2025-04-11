@@ -3,7 +3,7 @@ package org.example.feature
 import org.example.Transaction
 import java.util.UUID
 
-class TransactionOperations: TransactionService {
+class TransactionManagerImplementation: TransactionManager {
 
     val transactions = mutableListOf<Transaction>()
     // val transactions: List<Transaction> get() = _transactions

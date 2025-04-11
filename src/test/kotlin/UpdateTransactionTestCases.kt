@@ -1,33 +1,33 @@
 package org.example
 
-import org.example.feature.TransactionOperations
+import org.example.feature.TransactionManagerImplementation
 import java.time.LocalDateTime
 import java.util.*
 
 fun main(){
-    val transactionOperations = TransactionOperations()
+    val transactionManagerImplementation = TransactionManagerImplementation()
 
     val id= UUID.randomUUID()
-    transactionOperations.addTransaction(
+    transactionManagerImplementation.addTransaction(
         Transaction(
             id =  id,
             amount = 100.0,
             date = LocalDateTime.now(),
             transactionType = TransactionType.INCOME,
-            category = "Food",
+            category = Category(1,"Food")   ,
             description = "Lunch"
         )
     )
 
     checkUpdate(
         name = "Should return true when id is exist",
-        expectedResult = transactionOperations.updateTransaction(id,
+        expectedResult = transactionManagerImplementation.updateTransaction(id,
             Transaction(
                 id = id,
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
-                category = "Food",
+                category = Category(1,"Food"),
                 description = ""
             )
         ),
@@ -36,13 +36,13 @@ fun main(){
 
     checkUpdate(
         name = "Should return false when id is not exist",
-        expectedResult = transactionOperations.updateTransaction(UUID.randomUUID(),
+        expectedResult = transactionManagerImplementation.updateTransaction(UUID.randomUUID(),
             Transaction(
                 id = UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
-                category = "Food",
+                category = Category(1,"Food"),
                 description = ""
             )
         ),

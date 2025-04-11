@@ -1,6 +1,6 @@
 package org.example
 
-import org.example.feature.TransactionOperations
+import org.example.feature.TransactionManagerImplementation
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -14,29 +14,29 @@ fun checkDeletion(name: String, result: Boolean, correct: Boolean) {
 }
 
 fun main() {
-    val transactionOperations = TransactionOperations()
+    val transactionManagerImplementation = TransactionManagerImplementation()
     val id= UUID.randomUUID()
 
-    transactionOperations.addTransaction(
+    transactionManagerImplementation.addTransaction(
         Transaction(
             id =  id,
             amount = 100.0,
             date = LocalDateTime.now(),
             transactionType = TransactionType.INCOME,
-            category = "Food",
+            category = Category(1,"Food"),
             description = "Lunch"
         )
     )
 
     checkDeletion(
         name = "Should return true when ID is exist",
-        result = transactionOperations.deleteTransaction(id),
+        result = transactionManagerImplementation.deleteTransaction(id),
         correct = true
     )
 
     checkDeletion(
         name = "Should return false when ID is not exist",
-        result = transactionOperations.deleteTransaction(UUID.randomUUID()),
+        result = transactionManagerImplementation.deleteTransaction(UUID.randomUUID()),
         correct = false
     )
 
