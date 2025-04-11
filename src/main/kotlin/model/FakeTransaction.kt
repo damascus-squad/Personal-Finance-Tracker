@@ -4,12 +4,10 @@ import java.time.LocalDate
 class FakeTransaction (
     val date: LocalDate,
     val amount: Double,
-    val fakeTransactionType: FakeTransactionType,
-    val fakeCategory: FakeCategory
-) {
+    val transactionType: FakeTransactionType,
+    val category: FakeCategory
+)
 
-}
-
-enum class FakeTransactionType{
+enum class FakeTransactionType {
     INCOME,EXPENSE
 }
