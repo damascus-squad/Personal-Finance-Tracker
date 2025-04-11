@@ -1,61 +1,48 @@
 package org.example.features.summary
 
-import org.example.model.FakeCategory
-import org.example.model.FakeTransaction
-import org.example.model.FakeTransactionType
-import org.example.model.Report
-// TODO: Apply dependency inversion
-class TransactionSummary {
+import org.example.model.*
 
-    // TODO: Make list a member variable in the class
+class TransactionSummary(
+    private val transactions: List<FakeTransaction>
+): Summary {
 
+    private fun getReport(year: Int, month: Int? = null): TransactionReport {
+        val transactionReport = TransactionReport(0.0, 0.0, mutableMapOf())
 
-    // TODO: Create one generic function with month as nullable with default param NULL
-
-    fun getByMonth(fakeTransactions: List<FakeTransaction>, month: Int, year: Int): Report {
-        val monthlyReport = Report(0.0,0.0, mutableMapOf<FakeCategory,Double>())
-        fakeTransactions.forEach { transaction ->
-            if(transaction.date.year == year && transaction.date.month.value == month){
-                when(transaction.fakeTransactionType){
-                    FakeTransactionType.INCOME -> monthlyReport.income += transaction.amount
-                    FakeTransactionType.EXPENSE -> monthlyReport.expenses += transaction.amount
-                }
-
-                // FIXME: possible bug in = and not +=
-                monthlyReport.fakeCategorySummaries[transaction.fakeCategory] = transaction.amount
+        val transactionFilter: (FakeTransaction) -> Boolean = { transaction ->
+            if (month == null) {
+                transaction.date.year == year
+            } else {
+                transaction.date.year == year && transaction.date.month.value == month
             }
         }
-        // TODO: move print to the CLI functions
-//        printOutReport(monthlyReport)
-        return monthlyReport
 
-    }
-
-    fun getByYear(fakeTransactions: List<FakeTransaction>, year: Int): Report {
-        val monthlyReport = Report(0.0,0.0, mutableMapOf<FakeCategory,Double>())
-        fakeTransactions.forEach { transaction ->
-            if(transaction.date.year == year ){
-                when(transaction.fakeTransactionType){
-                    FakeTransactionType.INCOME -> monthlyReport.income += transaction.amount
-                    FakeTransactionType.EXPENSE -> monthlyReport.expenses += transaction.amount
-                }
-                monthlyReport.fakeCategorySummaries[transaction.fakeCategory] = transaction.amount
+        transactions.filter(transactionFilter).forEach { transaction ->
+            when(transaction.transactionType) {
+                FakeTransactionType.INCOME -> transactionReport.income += transaction.amount
+                FakeTransactionType.EXPENSE -> transactionReport.expenses += transaction.amount
             }
+
+            val categorySummary = transactionReport.categorySummaries.getOrDefault(
+                key = transaction.category,
+                defaultValue = CategorySummary(transaction.category)
+            )
+
+            categorySummary.transactionsCount++
+            categorySummary.amount += transaction.amount
+
+            transactionReport.categorySummaries[transaction.category] = categorySummary
         }
-//        printOutReport(monthlyReport)
-        return monthlyReport
+
+        return transactionReport
     }
 
-    private fun printOutReport(report: Report) {
-        println("INCOME : ${report.income}")
-        println("EXPENSES : ${report.expenses}")
-        println("BALANCE : ${report.getBalance()}")
-        println("###########################################")
-        println("CATEGORIES")
-        report.fakeCategorySummaries.forEach { (category, amount) ->
-            println("$category : $amount")
-        }
+    override fun getByMonth(year: Int, month: Int): TransactionReport {
+        return getReport(year, month)
     }
 
+    override fun getByYear(year: Int): TransactionReport {
+        return getReport(year)
+    }
 
 }
