@@ -1,9 +1,8 @@
 package org.example
 
-import org.example.feature.TransactionManagerImplementation
-import java.time.LocalDateTime
-import java.util.UUID
 
+import org.example.feature.TransactionMangerImp
+import java.util.UUID
 
 fun checkDeletion(name: String, result: Boolean, correct: Boolean) {
     if (result == correct) {
@@ -14,32 +13,36 @@ fun checkDeletion(name: String, result: Boolean, correct: Boolean) {
 }
 
 fun main() {
-    val transactionManagerImplementation = TransactionManagerImplementation()
-    val id= UUID.randomUUID()
-
-    transactionManagerImplementation.addTransaction(
-        Transaction(
-            id =  id,
-            amount = 100.0,
-            date = LocalDateTime.now(),
-            transactionType = TransactionType.INCOME,
-            category = Category(1,"Food"),
-            description = "Lunch"
-        )
-    )
-
+    val transaction = TransactionMangerImp()
     checkDeletion(
         name = "Should return true when ID is exist",
-        result = transactionManagerImplementation.deleteTransaction(id),
+        result = transaction.deleteTransaction(UUID.randomUUID()),
         correct = true
     )
 
     checkDeletion(
         name = "Should return false when ID is not exist",
-        result = transactionManagerImplementation.deleteTransaction(UUID.randomUUID()),
+        result = transaction.deleteTransaction(UUID.randomUUID()),
+        correct = false
+    )
+
+    checkDeletion(
+        name = "Should return false when ID is not valid",
+        result = transaction.deleteTransaction(UUID.randomUUID()),
+        correct = false
+    )
+
+    checkDeletion(
+        name = "Should return false when ID is empty",
+        result = transaction.deleteTransaction(UUID.randomUUID()),
+        correct = false
+    )
+
+    checkDeletion(
+        name = "Should return false when ID is blank",
+        result = transaction.deleteTransaction(UUID.randomUUID()),
         correct = false
     )
 
 }
-
 

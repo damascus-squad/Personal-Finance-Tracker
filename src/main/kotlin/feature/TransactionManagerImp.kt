@@ -4,7 +4,7 @@ import org.example.Transaction
 import java.util.UUID
 
 class TransactionMangerImp: TransactionManager {
-    private val transactions = mutableListOf<Transaction>()
+    val transactions = mutableListOf<Transaction>()
     // val transactions: List<Transaction> get() = _transactions
 
     override fun getTransactionById(id: UUID): Transaction? {

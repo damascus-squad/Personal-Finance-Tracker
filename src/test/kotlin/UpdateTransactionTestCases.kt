@@ -1,12 +1,11 @@
 package org.example
 
-import org.example.feature.TransactionManagerImplementation
+import org.example.feature.TransactionMangerImp
 import java.time.LocalDateTime
 import java.util.*
 
 fun main(){
-    val transactionManagerImplementation = TransactionManagerImplementation()
-
+    val transactionManagerImplementation = TransactionMangerImp()
     val id= UUID.randomUUID()
     transactionManagerImplementation.addTransaction(
         Transaction(

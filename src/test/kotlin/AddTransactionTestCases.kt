@@ -1,6 +1,7 @@
 package org.example
 
-import org.example.feature.TransactionManagerImplementation
+import org.example.feature.TransactionMangerImp
+import org.example.feature.categories
 import java.time.LocalDateTime
 import java.util.*
 
@@ -21,36 +22,22 @@ fun checkList(name: String, actualSize: Int, expectedSize: Int) {
 }
 
 fun main() {
-    val transactionManagerImplementation = TransactionManagerImplementation()
-
+    val transaction = TransactionMangerImp()
     checkList(
         name = "Should return 0 transactions before adding any transaction",
-        actualSize = transactionManagerImplementation.transactions.size,
+        actualSize = transaction.transactions.size,
         expectedSize = 0
     )
 
-    val id= UUID.randomUUID()
-    transactionManagerImplementation.addTransaction(
-        Transaction(
-            id =  id,
-            amount = 100.0,
-            date = LocalDateTime.now(),
-            transactionType = TransactionType.INCOME,
-            category = Category(1,"Food"),
-            description = "Lunch"
-        )
-    )
-
-
     check(
         name = "Should return true when adding a new transaction",
-        result = transactionManagerImplementation.addTransaction(
+        result = transaction.addTransaction(
             Transaction(
                 id =  UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.INCOME,
-                category = Category(1,"Food"),
+                category = categories[0],
                 description = "Lunch"
             )
         ),
@@ -59,24 +46,86 @@ fun main() {
 
 
     check(
-        name = "Should return false when adding existing transaction ID",
-        result = transactionManagerImplementation.addTransaction(
+        name = "Should return false when adding duplicate transaction ID",
+        result = transaction.addTransaction(
             Transaction(
-                id = id,
+                id = UUID.randomUUID(),
                 amount = 150.0,
                 date = LocalDateTime.now(),
                 transactionType = TransactionType.EXPENSE,
-                category = Category(1,"Food"),
+                category = categories[0],
                 description = "Lunch"
             )
         ),
         correct = false,
     )
 
+
+    check(
+        name = "Should return false when adding transaction with negative ID",
+        result = transaction.addTransaction(
+            Transaction(
+                id = UUID.randomUUID(),
+                amount = 100.0,
+                date = LocalDateTime.now(),
+                transactionType = TransactionType.EXPENSE,
+                category = categories[0],
+                description = "Lunch"
+            )
+        ),
+        correct = false,
+    )
+
+
+    check(
+        name = "Should return false when adding transaction with negative amount",
+        result = transaction.addTransaction(
+            Transaction(
+                id = UUID.randomUUID(),
+                amount = -100.0,
+                date = LocalDateTime.now(),
+                transactionType = TransactionType.EXPENSE,
+                category = categories[0],
+                description = "Lunch"
+            )
+        ),
+        correct = false,
+    )
+
+    check(
+        name = "Should return false when category is blank",
+        result = transaction.addTransaction(
+            Transaction(
+                id = UUID.randomUUID(),
+                amount = 100.0,
+                date = LocalDateTime.now(),
+                transactionType = TransactionType.EXPENSE,
+                category = categories[10],
+                description = ""
+            )
+        ),
+        correct = false,
+    )
+
+    check(
+        name = "Should return false when amount is Nan",
+        result = transaction.addTransaction(
+            Transaction(
+                id = UUID.randomUUID(),
+                amount = Double.NaN,
+                date = LocalDateTime.now(),
+                transactionType = TransactionType.EXPENSE,
+                category = categories[0],
+                description = ""
+            )
+        ),
+        correct = false,
+    )
+
     checkList(
-        name = "Should return 1 transactions after adding 1 invalid and 2 valid",
-        actualSize = transactionManagerImplementation.transactions.size,
-        expectedSize = 2
+        name = "Should return 1 transactions after adding 4 invalid and 1 valid",
+        actualSize = transaction.transactions.size,
+        expectedSize = 1
     )
 
 }

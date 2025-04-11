@@ -17,14 +17,4 @@ enum class TransactionType {
     EXPENSE
 }
 
-
-data class Category(
-    val id: Int,
-    val name: String
-)
-
-
-
-
-
-
+data class Category(val id:Int, val name:String)
