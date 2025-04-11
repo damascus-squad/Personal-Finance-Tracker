@@ -1,6 +1,6 @@
-package category_feature.feature
+package categoryFeature.feature
 
-import category_feature.model.Category
+import categoryFeature.model.Category
 
 interface CategoryManager {
     fun add(name: String): Boolean

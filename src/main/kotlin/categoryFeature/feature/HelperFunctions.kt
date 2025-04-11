@@ -1,4 +1,4 @@
-package category_feature.feature
+package categoryFeature.feature
 
 object CategoryHelper {
 

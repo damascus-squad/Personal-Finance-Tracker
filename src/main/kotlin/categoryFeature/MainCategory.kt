@@ -1,8 +1,8 @@
-package category_feature
+package categoryFeature
 
-import category_feature.feature.CategoryHelper
-import category_feature.feature.CategoryManagerImpl
-import category_feature.model.Operation
+import categoryFeature.feature.CategoryHelper
+import categoryFeature.feature.CategoryManagerImpl
+import categoryFeature.model.Operation
 
 fun main() {
     val categoryManager = CategoryManagerImpl(listOf("food", "transport", "entertainment"))

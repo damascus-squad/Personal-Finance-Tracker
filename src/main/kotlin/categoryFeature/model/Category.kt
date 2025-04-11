@@ -1,4 +1,4 @@
-package category_feature.model
+package categoryFeature.model
 
 data class Category(
     val id: Int,

@@ -1,14 +1,17 @@
 package test
 
-import category_feature.feature.CategoryManagerImpl
+import categoryFeature.feature.CategoryManagerImpl
 import util.CheckTest
 import util.check
 
 
 class TestCategory {
 
-    private val categoryManagerImpl = CategoryManagerImpl(listOf("Food", "Transport", "Entertainment"))
+    private lateinit var  categoryManagerImpl: CategoryManagerImpl
 
+    init {
+        categoryManagerImpl = CategoryManagerImpl(listOf("Food", "Transport", "Entertainment"))
+    }
     @CheckTest
     fun testAddCategory(): Boolean {
         return check(
