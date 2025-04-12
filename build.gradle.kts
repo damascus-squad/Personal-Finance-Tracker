@@ -22,3 +22,10 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
+
+tasks.register<JavaExec>("runTestMain") {
+    group = "application"
+    description = "Run all test cases"
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("MainKt")
+}
