@@ -1,5 +1,6 @@
 package org.example
 
+import categoryFeature.model.Category
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -16,5 +17,3 @@ enum class TransactionType {
     INCOME,
     EXPENSE
 }
-
-data class Category(val id:Int, val name:String)

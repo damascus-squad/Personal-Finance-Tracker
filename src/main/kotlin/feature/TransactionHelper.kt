@@ -1,59 +1,23 @@
-    package org.example.feature
+package org.example.feature
 
-    import org.example.Category
-    import org.example.Transaction
-    import org.example.TransactionType
-    import java.time.LocalDateTime
-    import java.util.*
+import categoryFeature.feature.CategoryHelper
+import categoryFeature.feature.CategoryManagerImpl
+import categoryFeature.model.Category
+import org.example.Transaction
+import org.example.TransactionType
+import java.time.LocalDateTime
+import java.util.*
 
-    val categories = listOf(
-        Category(1, "Food"),
-        Category(2, "Transport"),
-        Category(3, "Entertainment"),
-        Category(4, "Bills"),
-        Category(5, "Shopping"),
-        Category(5, "Health"),
-        Category(6, "Salary"),
-        Category(7, "Other"),
-        Category(8, "Custom")
-    )
-
-    fun runCLI(manager: TransactionManager) {
-        while (true) {
-            println(
-                """
-    ===== Personal Finance CLI=====
-    1. Add Transaction
-    2. Edit Transaction
-    3. Delete Transaction
-    4. List All Transactions
-    5. Exit
-    ==================================
-          """.trimMargin()
-            )
-            print("Choose an option: ")
-            when (readlnOrNull()?.trim()) {
-                "1" -> addTransaction(manager)
-                "2" -> editTransaction(manager)
-                "3" -> deleteTransaction(manager)
-                "4" -> displayAllTransactions(manager)
-                "5" -> {
-                    println("Exiting... Goodbye!")
-                    return
-                }
-
-                else -> println("❌ Invalid choice!")
-            }
-            println("press any key to Continue")
-            readlnOrNull()
-        }
-    }
-
+object TransactionHelper {
+    private val categories = emptyList<String>()
+    private val categoryManager = CategoryManagerImpl(categories)
 
     fun addTransaction(manager: TransactionManager) {
-        val amount = readPositiveAmount()
+        val amount = readAmount()
         val transactionType = selectTransactionType()
-        val category = selectCategory()
+        CategoryHelper.displayCategories(categoryManager)
+
+        val category = CategoryHelper.addCategory(categoryManager)
 
         print("Enter description (optional): ")
         val description = readlnOrNull()
@@ -63,7 +27,7 @@
             amount = amount,
             transactionType = transactionType,
             date = LocalDateTime.now(),
-            category = category,
+            category = Category(1,"food"),
             description = description
         )
 
@@ -103,24 +67,28 @@
 
             when (choice) {
                 1 -> {
-                    updated = updated.copy(amount = readPositiveAmount())
+                    updated = updated.copy(amount = readAmount())
                     updateTransactionField(manager, existingTransaction, updated)
                 }
+
                 2 -> {
                     updated = updated.copy(transactionType = selectTransactionType())
                     updateTransactionField(manager, existingTransaction, updated)
                 }
+
                 3 -> {
-                    val category = selectCategory()
-                    updated = updated.copy(category = category)
+                    val newCategory = CategoryHelper.updateCategory(categoryManager)
+                    updated = updated.copy(category = Category(1, newCategory.toString()))
                     updateTransactionField(manager, existingTransaction, updated)
                 }
+
                 4 -> {
                     print("Enter new description: ")
                     val newDescription = readlnOrNull()?.trim()
                     updated = updated.copy(description = newDescription)
                     updateTransactionField(manager, existingTransaction, updated)
                 }
+
                 5 -> {
                     println("Transaction editing finished.")
                     break
@@ -130,7 +98,6 @@
             }
         }
     }
-
 
     fun deleteTransaction(manager: TransactionManager) {
         val transactions = manager.getAllTransactions()
@@ -154,7 +121,6 @@
         }
     }
 
-
     fun displayAllTransactions(manager: TransactionManager) {
         val transactions = manager.getAllTransactions()
         if (transactions.isEmpty()) {
@@ -167,8 +133,7 @@
         }
     }
 
-
-    fun readPositiveAmount(): Double {
+    private fun readAmount(): Double {
         var amount: Double?
         do {
             print("Enter amount (must be positive): ")
@@ -181,15 +146,7 @@
         return amount
     }
 
-    fun selectCategory(): Category {
-        println("List of categories: ")
-        categories.forEachIndexed { index, category ->
-            println("${index + 1}. ${category.name}")
-        }
-        return categories[validateIndexWithinRange(categories.size)]
-    }
-
-    fun selectTransactionType(): TransactionType {
+    private fun selectTransactionType(): TransactionType {
         while (true) {
             println("Select transaction type:")
             println("1. INCOME")
@@ -202,7 +159,7 @@
         }
     }
 
-    fun validateIndexWithinRange(size: Int): Int {
+    private fun validateIndexWithinRange(size: Int): Int {
         var index = readlnOrNull()?.toIntOrNull()?.minus(1)
         while (index == null || index !in 0 until size) {
             print("❌ Invalid selection. Please try again: ")
@@ -211,7 +168,7 @@
         return index
     }
 
-    fun updateTransactionField(
+    private fun updateTransactionField(
         manager: TransactionManager,
         existingTransaction: Transaction,
         updatedTransaction: Transaction
@@ -222,3 +179,6 @@
             println("❌ Failed to update transaction.")
         }
     }
+
+
+}

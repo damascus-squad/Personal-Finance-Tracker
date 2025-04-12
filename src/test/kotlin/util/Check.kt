@@ -1,7 +1,9 @@
 package util
 
+import org.example.Transaction
 
-fun check(
+
+internal fun check(
     name: String,
     result: Any?,
     correctResult: Any?
@@ -14,5 +16,13 @@ fun check(
         println("   ↪ Expected: $correctResult")
         println("   ↪ Actual:   $result")
         false
+    }
+}
+
+internal fun List<Transaction>.checkList(name: String, other:List<Transaction>) {
+    if (size == other.size) {
+        println("success - $name | found: $size transactions")
+    } else {
+        println("failed - ($name)... it should return ${other.size} transactions but found: $size")
     }
 }

@@ -2,6 +2,7 @@ package categoryFeature.feature
 
 object CategoryHelper {
 
+
     fun addCategory(manager: CategoryManager) {
         print("Enter category name to add: ")
         val categoryName = readlnOrNull()?.trim()
@@ -17,7 +18,6 @@ object CategoryHelper {
             println("Invalid category name.")
         }
     }
-
 
     fun updateCategory(manager: CategoryManager) {
         val categories = manager.getCategories()
@@ -57,7 +57,6 @@ object CategoryHelper {
         }
     }
 
-
     fun deleteCategory(manager: CategoryManager) {
         val categories = manager.getCategories()
         categories.forEach { println("[${it.id}] ${it.name}") }
@@ -74,7 +73,6 @@ object CategoryHelper {
         println(if (result) "Category deleted." else "Category with ID $idToDelete not found.")
     }
 
-
     fun checkCategory(manager: CategoryManagerImpl) {
         print("Enter category name to check: ")
         val name = readlnOrNull()?.trim()
@@ -85,8 +83,22 @@ object CategoryHelper {
         }
     }
 
+    fun displayCategories(manager: CategoryManager) {
+        val categories = manager.getCategories()
+        if (categories.isEmpty()) {
+            println("No categories found.")
+            return
+        }
+
+        println("All Categories:")
+        categories.forEach { category ->
+            println("- ${category.name}")
+        }
+    }
+
     private fun isValidCategoryName(name: String): Boolean {
         val regex = Regex("^[\\p{L}\\s]+$")
         return regex.matches(name)
     }
+
 }

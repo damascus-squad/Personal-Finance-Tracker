@@ -5,7 +5,6 @@ import java.util.UUID
 
 class TransactionMangerImp: TransactionManager {
     val transactions = mutableListOf<Transaction>()
-    // val transactions: List<Transaction> get() = _transactions
 
     override fun getTransactionById(id: UUID): Transaction? {
         return transactions.find { it.id == id }
@@ -18,7 +17,6 @@ class TransactionMangerImp: TransactionManager {
             transactions.add(transaction)
             return true
         }
-
         return false
     }
 

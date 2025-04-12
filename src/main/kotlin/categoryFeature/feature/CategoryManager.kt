@@ -9,5 +9,4 @@ interface CategoryManager {
     fun checkExists(name: String): Boolean
     fun getCategories(): List<Category>
     fun getCategoryById(id: Int): Category?
-
 }
