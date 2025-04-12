@@ -16,11 +16,17 @@ class JsonFileStorage<T>(
         File(filePath).writeText(json)
     }
 
-
+    //FIXME handle exception file empty
     override fun load(): List<T> {
         val file = File(filePath)
         if (!file.exists()) return emptyList()
         val content = file.readText()
         return Json.decodeFromString(serializer, content)
     }
+
+    override fun overWrite(allData: List<T>) {
+        val json = Json.encodeToString(serializer, allData)
+        File(filePath).writeText(json)
+    }
+
 }

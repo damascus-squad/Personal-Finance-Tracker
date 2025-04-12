@@ -1,10 +1,13 @@
 package org.example.feature
 
 import org.example.Transaction
+import org.example.storage.FileStorage
+import org.example.storage.FileStorageFactory
 import java.util.UUID
 
 class TransactionMangerImp: TransactionManager {
     val transactions = mutableListOf<Transaction>()
+    private val storage: FileStorage<Transaction> = FileStorageFactory.create("transactions.json")
 
     override fun getTransactionById(id: UUID): Transaction? {
         return transactions.find { it.id == id }
@@ -15,6 +18,7 @@ class TransactionMangerImp: TransactionManager {
 
         if (!exists) {
             transactions.add(transaction)
+            storage.save(transactions)
             return true
         }
         return false
@@ -25,6 +29,7 @@ class TransactionMangerImp: TransactionManager {
 
         if (index != -1) {
             transactions[index] = transaction
+            storage.save(transactions)
             return true
         }
 
@@ -33,10 +38,15 @@ class TransactionMangerImp: TransactionManager {
 
     override fun deleteTransaction(id: UUID): Boolean {
         val transaction = transactions.find { it.id == id } ?: return false
-        return transactions.remove(transaction)
+        transactions.remove(transaction)
+        storage.overWrite(transactions)
+        return true
     }
 
     override fun getAllTransactions(): List<Transaction> {
-        return transactions.toList()
+        if (transactions.isEmpty()){
+            transactions.addAll(storage.load())
+        }
+        return transactions
     }
 }

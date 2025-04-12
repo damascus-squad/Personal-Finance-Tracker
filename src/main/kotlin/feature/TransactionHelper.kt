@@ -1,23 +1,35 @@
 package org.example.feature
 
-import categoryFeature.feature.CategoryHelper
+import categoryFeature.feature.CategoryHelper.selectCategory
 import categoryFeature.feature.CategoryManagerImpl
-import categoryFeature.model.Category
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import org.example.Transaction
 import org.example.TransactionType
+import org.example.storage.FileStorage
+import org.example.storage.FileStorageFactory
+import org.example.storage.LocalDateTimeSerializer
 import java.time.LocalDateTime
 import java.util.*
 
 object TransactionHelper {
     private val categories = emptyList<String>()
     private val categoryManager = CategoryManagerImpl(categories)
+    val json = Json {
+        serializersModule = SerializersModule {
+            contextual(LocalDateTime::class, LocalDateTimeSerializer)
+        }
+        prettyPrint = true
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+    }
+
+
 
     fun addTransaction(manager: TransactionManager) {
         val amount = readAmount()
         val transactionType = selectTransactionType()
-        CategoryHelper.displayCategories(categoryManager)
-
-        val category = CategoryHelper.addCategory(categoryManager)
+        val category = selectCategory(categoryManager)
 
         print("Enter description (optional): ")
         val description = readlnOrNull()
@@ -27,7 +39,7 @@ object TransactionHelper {
             amount = amount,
             transactionType = transactionType,
             date = LocalDateTime.now(),
-            category = Category(1,"food"),
+            category = category,
             description = description
         )
 
@@ -77,8 +89,9 @@ object TransactionHelper {
                 }
 
                 3 -> {
-                    val newCategory = CategoryHelper.updateCategory(categoryManager)
-                    updated = updated.copy(category = Category(1, newCategory.toString()))
+                    val newCategory = selectCategory(categoryManager)
+                    categoryManager.update(existingTransaction.category.id, readlnOrNull().toString())
+                    updated = updated.copy(category = newCategory)
                     updateTransactionField(manager, existingTransaction, updated)
                 }
 
@@ -129,7 +142,7 @@ object TransactionHelper {
         }
         println("=== All Transactions ===")
         transactions.forEachIndexed { index, transaction ->
-            println("${index + 1}. ID: ${transaction.id}. | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category.name} | Date: ${transaction.date} | Desc: ${transaction.description}")
+            println("${index + 1} ID: ${transaction.id} | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category.name} | Date: ${transaction.date} | Desc: ${transaction.description}")
         }
     }
 
