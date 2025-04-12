@@ -4,6 +4,7 @@ import model.Transaction
 import model.TransactionType
 import org.example.features.category.CategoryHelper
 import org.example.storage.FileStorageFactory
+import org.example.ui.printColoredTable
 import java.time.LocalDateTime
 import java.util.*
 
@@ -125,9 +126,7 @@ object TransactionHelper {
             return
         }
         println("=== All Transactions ===")
-        transactions.forEachIndexed { index, transaction ->
-            println("${index + 1} ID: ${transaction.id} | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category.name} | Date: ${transaction.date} | Desc: ${transaction.description}")
-        }
+        transactions.printColoredTable()
     }
 
     fun getAll(): List<Transaction> {

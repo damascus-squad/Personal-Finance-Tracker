@@ -1,18 +1,20 @@
 package ui
 
 import features.transaction.TransactionHelper
+import org.example.ui.TerminalColor
+import org.example.ui.withStyle
 
 fun runTransactionsCLI() {
     while (true) {
         println(
             """
-    ===== Personal Finance CLI=====
-    1. Add Transaction
-    2. Edit Transaction
-    3. Delete Transaction
-    4. List All Transactions
-    5. Exit
-    ==================================
+===== Personal Finance CLI=====
+1. Add Transaction
+2. Edit Transaction
+3. Delete Transaction
+4. List All Transactions
+5. Exit
+==================================
           """.trimMargin()
         )
         print("Choose an option: ")
@@ -22,11 +24,11 @@ fun runTransactionsCLI() {
             "3" -> TransactionHelper.delete()
             "4" -> TransactionHelper.displayAll()
             "5" -> {
-                println("Exiting... Goodbye!")
+                println("Exiting... Goodbye!".withStyle(TerminalColor.Blue))
                 return
             }
 
-            else -> println("❌ Invalid choice!")
+            else -> println("❌ Invalid choice!".withStyle(TerminalColor.Red))
         }
         println("press any key to Continue")
         readlnOrNull()
@@ -49,7 +51,7 @@ fun getValidatedInput(prompt: String, validator: (String) -> Boolean): Int {
         if (validator(input)) {
             return input.toInt()
         } else {
-            println("Invalid input. Please try again.")
+            println("Invalid input. Please try again.".withStyle(TerminalColor.Red))
         }
     }
 }

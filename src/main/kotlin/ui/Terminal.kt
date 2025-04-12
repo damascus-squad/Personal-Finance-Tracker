@@ -1,0 +1,91 @@
+package org.example.ui
+
+import model.Transaction
+import model.TransactionType
+import java.time.format.DateTimeFormatter
+
+
+enum class TerminalColor(val code: String) {
+    Red("\u001B[31m"),
+    Green("\u001B[32m"),
+    Yellow("\u001B[33m"),
+    Blue("\u001B[34m"),
+    Magenta("\u001B[35m"),
+    Cyan("\u001B[36m"),
+    Reset("\u001B[0m");
+
+    fun wrap(text: String) = "$code$text${Reset.code}"
+}
+
+fun String.withStyle(color: TerminalColor) = color.wrap(this)
+
+fun List<Transaction>.printColoredTable() {
+    enableWindowsAnsi()
+    val headers = listOf(
+        "ID",
+        "Amount",
+        "Type",
+        "Category",
+        "Description",
+        "Date"
+    )
+
+    val data = map {
+        listOf(
+            it.id.toString().take(7),
+            it.amount,
+            it.transactionType,
+            it.category.name,
+            it.description ?: "-",
+            it.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a"))
+        )
+    }
+
+    printTable(headers, data)
+}
+
+fun enableWindowsAnsi() {
+    if (System.getProperty("os.name").contains("Windows"))
+        System.setProperty("jansi.passthrough", "true")
+}
+
+fun printTable(headers: List<String>, data: List<List<Any>>) {
+    val colWidths = headers.mapIndexed { i, header ->
+        maxOf(header.length, data.maxOfOrNull { row -> row[i].toString().length } ?: 0)
+    }
+
+
+    val lineLength = (colWidths.sum() + colWidths.size * 3) - 1
+    val footer = " " + "—".repeat(lineLength)
+    println(footer)
+
+    fun printRow(items: List<Any>) {
+        val color = when {
+            TransactionType.EXPENSE in items -> TerminalColor.Red
+            TransactionType.INCOME in items -> TerminalColor.Green
+            else -> TerminalColor.entries.filter {
+                it !in listOf(TerminalColor.Red, TerminalColor.Green)
+            }.random()
+        }
+
+        items.forEachIndexed { i, item ->
+            print("| ${item.toString().padEnd(colWidths[i])} ".withStyle(color))
+        }
+        println("|")
+    }
+
+    printRow(headers)
+    println("|${colWidths.joinToString("|") { "-".repeat(it + 2) }}|")
+    data.forEach { printRow(it) }
+    println(footer)
+}
+
+fun clearConsole() {
+    Runtime.getRuntime().exec(
+        if (System.getProperty("os.name").contains("Windows"))
+            "cls"
+        else
+            "clear"
+    )
+    println("\u001B[2J")
+}

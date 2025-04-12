@@ -1,8 +1,10 @@
 package ui
 
 import model.Transaction
+import org.example.ui.TerminalColor
 import org.example.features.summary.TransactionSummary
 import org.example.model.TransactionReport
+import org.example.ui.withStyle
 import kotlin.collections.component1
 import kotlin.collections.component2
 
@@ -12,14 +14,13 @@ fun runReportsCLI(transactions: List<Transaction>) {
         println("\n[1] Monthly Report")
         println("[2] Yearly Report")
         println("[3] Exit")
-
         print("\nSelect option: ")
 
         when (readlnOrNull()) {
             "1" -> {
                 // Get and validate year
                 val year = getValidatedInput("Enter year: ") { input ->
-                    input.toIntOrNull()?.let { it > 0 } ?: false
+                    input.toIntOrNull()?.let { it > 0 } == true
                 }
 
                 // Get and validate month (1-12)
@@ -37,7 +38,7 @@ fun runReportsCLI(transactions: List<Transaction>) {
             "2" -> {
                 // Get and validate year
                 val year = getValidatedInput("Enter year: ") { input ->
-                    input.toIntOrNull()?.let { it > 0 } ?: false
+                    input.toIntOrNull()?.let { it > 0 } == true
                 }
 
                 printReport(
@@ -46,10 +47,10 @@ fun runReportsCLI(transactions: List<Transaction>) {
                     ).getByYear(year))
             }
             "3" -> {
-                println("\nExiting application. Goodbye!")
+                println("\nExiting application. Goodbye!".withStyle(TerminalColor.Blue))
                 break
             }
-            else -> println("\nInvalid option, try again.")
+            else -> println("\nInvalid option, try again.".withStyle(TerminalColor.Red))
         }
     }
 }
