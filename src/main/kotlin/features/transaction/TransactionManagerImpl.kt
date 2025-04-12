@@ -1,9 +1,8 @@
-package org.example.feature
+package features.transaction
 
-import org.example.Transaction
+import model.Transaction
 import org.example.storage.FileStorage
-import org.example.storage.FileStorageFactory
-import java.util.UUID
+import java.util.*
 
 class TransactionMangerImpl(
     private val storage: FileStorage<Transaction>

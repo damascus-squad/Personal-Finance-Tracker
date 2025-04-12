@@ -1,4 +1,4 @@
-package categoryFeature.model
+package org.example.model
 
 enum class Operation(val description: String) {
     AddCategory("Add Category"),

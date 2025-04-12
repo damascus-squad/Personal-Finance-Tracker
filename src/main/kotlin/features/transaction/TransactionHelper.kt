@@ -1,8 +1,8 @@
-package org.example.feature
+package features.transaction
 
-import categoryFeature.feature.CategoryHelper
-import org.example.Transaction
-import org.example.TransactionType
+import model.Transaction
+import model.TransactionType
+import org.example.features.category.CategoryHelper
 import org.example.storage.FileStorageFactory
 import java.time.LocalDateTime
 import java.util.*
@@ -128,6 +128,10 @@ object TransactionHelper {
         transactions.forEachIndexed { index, transaction ->
             println("${index + 1} ID: ${transaction.id} | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category.name} | Date: ${transaction.date} | Desc: ${transaction.description}")
         }
+    }
+
+    fun getAll(): List<Transaction> {
+        return transactionManager.getAll()
     }
 
     private fun readAmount(): Double {

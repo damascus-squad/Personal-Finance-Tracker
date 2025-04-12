@@ -1,4 +1,4 @@
-package categoryFeature.model
+package org.example.model
 
 import kotlinx.serialization.Serializable
 

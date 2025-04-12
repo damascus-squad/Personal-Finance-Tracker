@@ -1,6 +1,6 @@
 package util
 
-import org.example.Transaction
+import model.Transaction
 
 internal fun check(
     name: String,

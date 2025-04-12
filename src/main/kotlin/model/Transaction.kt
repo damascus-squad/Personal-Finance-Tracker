@@ -1,11 +1,11 @@
-package org.example
+package model
 
-import categoryFeature.model.Category
 import kotlinx.serialization.Serializable
+import org.example.model.Category
 import org.example.storage.LocalDateTimeSerializer
 import org.example.storage.UUIDSerializer
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 @Serializable
 data class Transaction(
