@@ -6,18 +6,18 @@ import org.example.ui.withStyle
 
 fun runTransactionsCLI() {
     while (true) {
-        println(
-            """
-===== Personal Finance CLI=====
-1. Add Transaction
-2. Edit Transaction
-3. Delete Transaction
-4. List All Transactions
-5. Exit
-==================================
-          """.trimMargin()
-        )
-        print("Choose an option: ")
+        println("===== Personal Finance CLI=====".withStyle(TerminalColor.Blue))
+        listOf(
+            "Add Transaction",
+            "Edit Transaction",
+            "Delete Transaction",
+            "List All Transactions",
+            "Exit",
+        ).forEachIndexed { index, item ->
+            println("${index + 1}. $item".withStyle(TerminalColor.entries.random()))
+        }
+        println("==================================".withStyle(TerminalColor.Blue))
+        print("Choose an option: ".withStyle(TerminalColor.Cyan))
         when (readlnOrNull()?.trim()) {
             "1" -> TransactionHelper.add()
             "2" -> TransactionHelper.edit()

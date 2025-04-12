@@ -11,11 +11,16 @@ import kotlin.collections.component2
 
 fun runReportsCLI(transactions: List<Transaction>) {
     while (true) {
-        println("\n[1] Monthly Report")
-        println("[2] Yearly Report")
-        println("[3] Exit")
-        print("\nSelect option: ")
-
+        println("===== Personal Finance CLI=====".withStyle(TerminalColor.Blue))
+        listOf(
+            "Monthly Report",
+            "Yearly Report",
+            "Exit",
+        ).forEachIndexed { index, item ->
+            println("${index + 1}. $item".withStyle(TerminalColor.entries.random()))
+        }
+        println("==================================".withStyle(TerminalColor.Blue))
+        print("Choose an option: ".withStyle(TerminalColor.Cyan))
         when (readlnOrNull()) {
             "1" -> {
                 // Get and validate year

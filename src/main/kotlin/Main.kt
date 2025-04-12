@@ -17,17 +17,17 @@ fun main() {
 fun mainCLI() {
     while (true) {
         clearConsole()
-        println(
-            """
-===== Personal Finance CLI=====
-1. Transactions
-2. Categories
-3. Reports
-4. Exit
-==================================
-          """.trimMargin()
-        )
-        print("Choose an option: ")
+        println("===== Personal Finance CLI=====".withStyle(TerminalColor.Blue))
+        listOf(
+            "Transactions",
+            "Categories",
+            "Reports",
+            "Exit",
+        ).forEachIndexed { index, item ->
+            println("${index + 1}. $item".withStyle(TerminalColor.entries.random()))
+        }
+        println("==================================".withStyle(TerminalColor.Blue))
+        print("Choose an option: ".withStyle(TerminalColor.Cyan))
         when (readlnOrNull()?.trim()) {
             "1" -> runTransactionsCLI()
             "2" -> runCategoriesCLI()
