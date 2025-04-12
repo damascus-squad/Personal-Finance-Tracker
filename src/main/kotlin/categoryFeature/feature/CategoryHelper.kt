@@ -1,5 +1,7 @@
 package categoryFeature.feature
 
+import categoryFeature.model.Category
+
 object CategoryHelper {
 
 
@@ -83,17 +85,35 @@ object CategoryHelper {
         }
     }
 
-    fun displayCategories(manager: CategoryManager) {
+    fun selectCategory(manager: CategoryManager): Category {
         val categories = manager.getCategories()
+
         if (categories.isEmpty()) {
-            println("No categories found.")
-            return
+            println("⚠️ No categories found. Please add a category.")
+            addCategory(manager)
+            val newCategory = manager.getCategories().last()
+            println("✅ You added: ${newCategory.name}")
+            return newCategory
         }
 
-        println("All Categories:")
+        println("\n📋 All Categories:")
         categories.forEach { category ->
-            println("- ${category.name}")
+            println("${category.id} - ${category.name}")
         }
+        println("${categories.size+1} - Custom Category")
+
+        println("🔽 Select a category by entering its number, or Enter Custom Category")
+        var selectedId = readlnOrNull()?.toIntOrNull()
+
+        while (selectedId == null || selectedId > categories.size+1) {
+            println("❌ Invalid selection. Please enter a valid category number:")
+            selectedId = readlnOrNull()?.toIntOrNull()
+        }
+        if (selectedId == (categories.size+1)) addCategory(manager)
+
+        val selectedCategory = manager.getCategoryById(selectedId)!!
+        println("✅ You selected: ${selectedCategory.name}")
+        return selectedCategory
     }
 
     private fun isValidCategoryName(name: String): Boolean {
