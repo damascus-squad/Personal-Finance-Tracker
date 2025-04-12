@@ -46,7 +46,7 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
         return categories.any { it.name == name.lowercase(Locale.getDefault()) }
     }
 
-    override fun getCategories(): List<Category> {
+    override fun getAll(): List<Category> {
         return categories.mapIndexed { index, cat ->
             cat.copy(id = index + 1)
         }
@@ -57,7 +57,7 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
             Category(index + 1, name.lowercase(Locale.getDefault()))
         }.toMutableList()
     }
-    override fun getCategoryById(id: Int): Category? {
+    override fun getById(id: Int): Category? {
         return categories.find { it.id == id }
     }
 

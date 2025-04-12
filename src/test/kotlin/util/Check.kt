@@ -2,7 +2,6 @@ package util
 
 import org.example.Transaction
 
-
 internal fun check(
     name: String,
     result: Any?,
@@ -19,7 +18,7 @@ internal fun check(
     }
 }
 
-internal fun List<Transaction>.checkList(name: String, other:List<Transaction>) {
+internal fun List<Transaction>.checkList(name: String, other: List<Transaction>) {
     if (size == other.size) {
         println("success - $name | found: $size transactions")
     } else {

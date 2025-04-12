@@ -1,35 +1,25 @@
 package org.example.feature
 
-import categoryFeature.feature.CategoryHelper.selectCategory
+import categoryFeature.feature.CategoryHelper.select
+import categoryFeature.feature.CategoryManager
 import categoryFeature.feature.CategoryManagerImpl
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import org.example.Transaction
 import org.example.TransactionType
-import org.example.storage.FileStorage
 import org.example.storage.FileStorageFactory
-import org.example.storage.LocalDateTimeSerializer
 import java.time.LocalDateTime
 import java.util.*
 
 object TransactionHelper {
     private val categories = emptyList<String>()
-    private val categoryManager = CategoryManagerImpl(categories)
-    val json = Json {
-        serializersModule = SerializersModule {
-            contextual(LocalDateTime::class, LocalDateTimeSerializer)
-        }
-        prettyPrint = true
-        encodeDefaults = true
-        ignoreUnknownKeys = true
-    }
+    private val transactionManager: TransactionManager = TransactionMangerImpl(
+        storage = FileStorageFactory.create("transactions.json")
+    )
+    private val categoryManager: CategoryManager = CategoryManagerImpl(categories)
 
-
-
-    fun addTransaction(manager: TransactionManager) {
+    fun add() {
         val amount = readAmount()
         val transactionType = selectTransactionType()
-        val category = selectCategory(categoryManager)
+        val category = select()
 
         print("Enter description (optional): ")
         val description = readlnOrNull()
@@ -43,21 +33,21 @@ object TransactionHelper {
             description = description
         )
 
-        if (manager.addTransaction(transaction)) {
+        if (transactionManager.add(transaction)) {
             println("✅ Transaction added.")
         } else {
             println("❌ Failed to add transaction.")
         }
     }
 
-    fun editTransaction(manager: TransactionManager) {
-        val transactions = manager.getAllTransactions()
+    fun edit() {
+        val transactions = transactionManager.getAll()
         if (transactions.isEmpty()) {
             println("❌ No transactions found.")
             println("Select Your option Again ")
             return
         }
-        displayAllTransactions(manager)
+        displayAll()
 
         println("Enter the number of the transaction you want to edit:")
         val existingTransaction = transactions[validateIndexWithinRange(transactions.size)]
@@ -80,26 +70,26 @@ object TransactionHelper {
             when (choice) {
                 1 -> {
                     updated = updated.copy(amount = readAmount())
-                    updateTransactionField(manager, existingTransaction, updated)
+                    updateTransactionField(existingTransaction, updated)
                 }
 
                 2 -> {
                     updated = updated.copy(transactionType = selectTransactionType())
-                    updateTransactionField(manager, existingTransaction, updated)
+                    updateTransactionField(existingTransaction, updated)
                 }
 
                 3 -> {
-                    val newCategory = selectCategory(categoryManager)
+                    val newCategory = select()
                     categoryManager.update(existingTransaction.category.id, readlnOrNull().toString())
                     updated = updated.copy(category = newCategory)
-                    updateTransactionField(manager, existingTransaction, updated)
+                    updateTransactionField(existingTransaction, updated)
                 }
 
                 4 -> {
                     print("Enter new description: ")
                     val newDescription = readlnOrNull()?.trim()
                     updated = updated.copy(description = newDescription)
-                    updateTransactionField(manager, existingTransaction, updated)
+                    updateTransactionField(existingTransaction, updated)
                 }
 
                 5 -> {
@@ -112,8 +102,8 @@ object TransactionHelper {
         }
     }
 
-    fun deleteTransaction(manager: TransactionManager) {
-        val transactions = manager.getAllTransactions()
+    fun delete() {
+        val transactions = transactionManager.getAll()
 
         if (transactions.isEmpty()) {
             println("❌ No transactions found.")
@@ -121,21 +111,21 @@ object TransactionHelper {
             return
         }
 
-        displayAllTransactions(manager)
+        displayAll()
         println("Enter the number of the Transaction you want to Delete:")
         val index = validateIndexWithinRange(transactions.size)
 
         val existingTransaction = transactions[index]
 
-        if (manager.deleteTransaction(existingTransaction.id)) {
+        if (transactionManager.delete(existingTransaction.id)) {
             println("✅ Transaction deleted.")
         } else {
             println("❌ Transaction not found.")
         }
     }
 
-    fun displayAllTransactions(manager: TransactionManager) {
-        val transactions = manager.getAllTransactions()
+    fun displayAll() {
+        val transactions = transactionManager.getAll()
         if (transactions.isEmpty()) {
             println("No transactions found.")
             return
@@ -182,16 +172,14 @@ object TransactionHelper {
     }
 
     private fun updateTransactionField(
-        manager: TransactionManager,
         existingTransaction: Transaction,
         updatedTransaction: Transaction
     ) {
-        if (manager.updateTransaction(existingTransaction.id, updatedTransaction)) {
+        if (transactionManager.update(existingTransaction.id, updatedTransaction)) {
             println("✅ Transaction updated.")
         } else {
             println("❌ Failed to update transaction.")
         }
     }
-
 
 }

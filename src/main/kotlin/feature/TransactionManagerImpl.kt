@@ -5,15 +5,17 @@ import org.example.storage.FileStorage
 import org.example.storage.FileStorageFactory
 import java.util.UUID
 
-class TransactionMangerImp: TransactionManager {
-    val transactions = mutableListOf<Transaction>()
-    private val storage: FileStorage<Transaction> = FileStorageFactory.create("transactions.json")
+class TransactionMangerImpl(
+    private val storage: FileStorage<Transaction>
+): TransactionManager {
+    private val transactions = mutableListOf<Transaction>()
 
-    override fun getTransactionById(id: UUID): Transaction? {
+
+    override fun getById(id: UUID): Transaction? {
         return transactions.find { it.id == id }
     }
 
-    override fun addTransaction(transaction: Transaction): Boolean {
+    override fun add(transaction: Transaction): Boolean {
         val exists = transactions.any { it.id == transaction.id }
 
         if (!exists) {
@@ -24,7 +26,7 @@ class TransactionMangerImp: TransactionManager {
         return false
     }
 
-    override fun updateTransaction(id: UUID, transaction: Transaction): Boolean {
+    override fun update(id: UUID, transaction: Transaction): Boolean {
         val index = transactions.indexOfFirst { it.id == id }
 
         if (index != -1) {
@@ -36,14 +38,14 @@ class TransactionMangerImp: TransactionManager {
         return false
     }
 
-    override fun deleteTransaction(id: UUID): Boolean {
+    override fun delete(id: UUID): Boolean {
         val transaction = transactions.find { it.id == id } ?: return false
         transactions.remove(transaction)
-        storage.overWrite(transactions)
+        storage.save(transactions, overwrite = true)
         return true
     }
 
-    override fun getAllTransactions(): List<Transaction> {
+    override fun getAll(): List<Transaction> {
         if (transactions.isEmpty()){
             transactions.addAll(storage.load())
         }

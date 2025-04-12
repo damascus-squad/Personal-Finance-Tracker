@@ -1,16 +1,11 @@
 package org.example
 
 import org.example.feature.*
-import org.example.feature.TransactionHelper.addTransaction
-import org.example.feature.TransactionHelper.deleteTransaction
-import org.example.feature.TransactionHelper.displayAllTransactions
-import org.example.feature.TransactionHelper.editTransaction
 
 fun main() {
-    val manger = TransactionMangerImp()
-    runCLI(manger)
+    runCLI()
 }
-fun runCLI(manager: TransactionManager) {
+fun runCLI() {
     while (true) {
         println(
             """
@@ -25,10 +20,10 @@ fun runCLI(manager: TransactionManager) {
         )
         print("Choose an option: ")
         when (readlnOrNull()?.trim()) {
-            "1" -> addTransaction(manager)
-            "2" -> editTransaction(manager)
-            "3" -> deleteTransaction(manager)
-            "4" -> displayAllTransactions(manager)
+            "1" -> TransactionHelper.add()
+            "2" -> TransactionHelper.edit()
+            "3" -> TransactionHelper.delete()
+            "4" -> TransactionHelper.displayAll()
             "5" -> {
                 println("Exiting... Goodbye!")
                 return
