@@ -1,8 +1,16 @@
 package categoryFeature.feature
 
-object CategoryHelper {
+import categoryFeature.model.Category
+import org.example.storage.FileStorageFactory
 
-    fun addCategory(manager: CategoryManager) {
+object CategoryHelper {
+    private val categoryManager: CategoryManager = CategoryManagerImpl(
+        listOf("Food", "Transport", "Entertainment"),
+        storage = FileStorageFactory.create("categories.json")
+    )
+
+
+    fun add() {
         print("Enter category name to add: ")
         val categoryName = readlnOrNull()?.trim()
         if (!categoryName.isNullOrEmpty()) {
@@ -11,17 +19,18 @@ object CategoryHelper {
                 return
             }
 
-            val result = manager.add(categoryName)
+            val result = categoryManager.add(categoryName)
             println(if (result) "Category '$categoryName' added successfully." else "Category already exists.")
         } else {
             println("Invalid category name.")
         }
     }
 
-
-    fun updateCategory(manager: CategoryManager) {
-        val categories = manager.getCategories()
+    fun update() {
+        val categories = categoryManager.getAll()
         categories.forEach { println("[${it.id}] ${it.name}") }
+        println("[${categories.size + 1}] Custom Category")
+        println()
 
         print("Enter the category ID to update: ")
         val idToUpdate = readlnOrNull()?.toIntOrNull()
@@ -31,7 +40,7 @@ object CategoryHelper {
             return
         }
 
-        val oldCategory = manager.getCategoryById(idToUpdate)
+        val oldCategory = categoryManager.getById(idToUpdate)
         if (oldCategory == null) {
             println("Category with ID $idToUpdate not found.")
             return
@@ -46,10 +55,10 @@ object CategoryHelper {
                 return
             }
 
-            if (manager.checkExists(newName)) {
+            if (categoryManager.checkExists(newName)) {
                 println("Error: '$newName' already exists.")
             } else {
-                val result = manager.update(idToUpdate, newName)
+                val result = categoryManager.update(idToUpdate, newName)
                 println(if (result) "Updated successfully." else "Update failed.")
             }
         } else {
@@ -57,9 +66,8 @@ object CategoryHelper {
         }
     }
 
-
-    fun deleteCategory(manager: CategoryManager) {
-        val categories = manager.getCategories()
+    fun delete() {
+        val categories = categoryManager.getAll()
         categories.forEach { println("[${it.id}] ${it.name}") }
 
         print("Enter the category ID to delete: ")
@@ -70,23 +78,57 @@ object CategoryHelper {
             return
         }
 
-        val result = manager.delete(idToDelete)
+        val result = categoryManager.delete(idToDelete)
         println(if (result) "Category deleted." else "Category with ID $idToDelete not found.")
     }
 
-
-    fun checkCategory(manager: CategoryManagerImpl) {
+    fun checkName() {
         print("Enter category name to check: ")
         val name = readlnOrNull()?.trim()
         if (!name.isNullOrEmpty()) {
-            println(if (manager.checkExists(name)) "Category exists." else "Category does not exist.")
+            println(if (categoryManager.checkExists(name)) "Category exists." else "Category does not exist.")
         } else {
             println("Invalid input.")
         }
+    }
+
+    fun select(): Category {
+        val categories = categoryManager.getAll()
+
+        if (categories.isEmpty()) {
+            println("⚠️ No categories found. Please add a category.")
+            add()
+            val newCategory = categoryManager.getAll().last()
+            println("✅ You added: ${newCategory.name}")
+            return newCategory
+        }
+
+        println("\n📋 All Categories:")
+        categories.forEach { category ->
+            println("${category.id} - ${category.name}")
+        }
+        println("${categories.size + 1} - Custom Category")
+        println("🔽 Select a category by entering its number, or Enter Custom Category")
+        var selectedId = readlnOrNull()?.toIntOrNull()
+
+        while (selectedId == null || selectedId > categories.size + 1) {
+            println("❌ Invalid selection. Please enter a valid category number:")
+            selectedId = readlnOrNull()?.toIntOrNull()
+        }
+        if (selectedId == (categories.size + 1)) add()
+
+
+        val selectedCategory = categoryManager.getById(selectedId)
+        if (selectedCategory == null) {
+            println("❌ Invalid selection. Please enter a valid category number:")
+        }
+        println("✅ You selected: ${selectedCategory?.name}")
+        return selectedCategory!!
     }
 
     private fun isValidCategoryName(name: String): Boolean {
         val regex = Regex("^[\\p{L}\\s]+$")
         return regex.matches(name)
     }
+
 }

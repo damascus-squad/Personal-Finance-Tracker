@@ -1,10 +1,12 @@
 import test.TestCategory
+import org.example.TestTransaction
 import util.runAllCheckTests
 
 fun main() {
     val isAllTestCasedPassed = runAllCheckTests(
         listOf(
-            TestCategory()
+            TestCategory(),
+            TestTransaction()
         )
     )
 
