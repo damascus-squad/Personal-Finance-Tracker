@@ -4,9 +4,9 @@ import org.example.model.*
 import java.util.UUID
 
 interface TransactionManager {
-    fun addTransaction(transaction: Transaction):Boolean
-    fun updateTransaction(id:UUID, transaction: Transaction):Boolean
-    fun deleteTransaction(id: UUID):Boolean
-    fun getAllTransactions(): List<Transaction>
-    fun getTransactionById(id: UUID): Transaction?
+    fun add(transaction: Transaction):Boolean
+    fun update(id:UUID, transaction: Transaction):Boolean
+    fun delete(id: UUID):Boolean
+    fun getAll(): List<Transaction>
+    fun getById(id: UUID): Transaction?
 }

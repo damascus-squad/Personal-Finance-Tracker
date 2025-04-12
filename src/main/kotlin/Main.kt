@@ -1,35 +1,30 @@
 package org.example
 
-import features.transaction.TransactionManager
-import features.transaction.TransactionMangerImp
-import ui.showCategories
-import ui.showReports
-import ui.showTransactions
+import org.example.feature.*
 
 fun main() {
-    val manger = TransactionMangerImp()
-    transactionCLI(manger)
+    runCLI()
 }
-
-
-fun transactionCLI(manager: TransactionManager) {
+fun runCLI() {
     while (true) {
         println(
             """
     ===== Personal Finance CLI=====
-    1. Transaction
-    2. Categories
-    3. Reports
-    4. Exit
+    1. Add Transaction
+    2. Edit Transaction
+    3. Delete Transaction
+    4. List All Transactions
+    5. Exit
     ==================================
           """.trimMargin()
         )
         print("Choose an option: ")
         when (readlnOrNull()?.trim()) {
-            "1" -> showTransactions(manager)
-            "2" -> showCategories()
-            "3" -> showReports(manager.getAllTransactions())
-            "4" -> {
+            "1" -> TransactionHelper.add()
+            "2" -> TransactionHelper.edit()
+            "3" -> TransactionHelper.delete()
+            "4" -> TransactionHelper.displayAll()
+            "5" -> {
                 println("Exiting... Goodbye!")
                 return
             }

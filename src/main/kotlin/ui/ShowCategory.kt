@@ -8,7 +8,7 @@ fun showCategories() {
     val categoryManager = CategoryManagerImpl(listOf("food", "transport", "entertainment"))
     while (true) {
         println("\n=== Category List ===")
-        val categories = categoryManager.getCategories()
+        val categories = categoryManager.getAll()
         categories.forEach { println("[${it.id}] ${it.name}") }
         val customOptionNumber = categories.size + 1
         println("[$customOptionNumber] Custom Category")
@@ -37,13 +37,13 @@ fun showCategories() {
 
                     print("Please select an operation (1-${Operation.entries.size}): ")
                     when (readlnOrNull()?.toIntOrNull()) {
-                        1 -> CategoryHelper.addCategory(categoryManager)
-                        2 -> CategoryHelper.updateCategory(categoryManager)
-                        3 -> CategoryHelper.deleteCategory(categoryManager)
-                        4 -> CategoryHelper.checkCategory(categoryManager)
+                        1 -> CategoryHelper.add()
+                        2 -> CategoryHelper.update()
+                        3 -> CategoryHelper.delete()
+                        4 -> CategoryHelper.checkName()
                         5 -> {
                             println("Categories:")
-                            categoryManager.getCategories().forEach {
+                            categoryManager.getAll().forEach {
                                 println("[${it.id}] ${it.name}")
                             }
                         }                        6 -> {
