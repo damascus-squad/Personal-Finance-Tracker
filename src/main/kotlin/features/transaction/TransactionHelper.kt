@@ -1,8 +1,6 @@
 package org.example.feature
 
-import categoryFeature.feature.CategoryHelper.select
-import categoryFeature.feature.CategoryManager
-import categoryFeature.feature.CategoryManagerImpl
+import categoryFeature.feature.CategoryHelper
 import org.example.Transaction
 import org.example.TransactionType
 import org.example.storage.FileStorageFactory
@@ -10,16 +8,14 @@ import java.time.LocalDateTime
 import java.util.*
 
 object TransactionHelper {
-    private val categories = emptyList<String>()
     private val transactionManager: TransactionManager = TransactionMangerImpl(
         storage = FileStorageFactory.create("transactions.json")
     )
-    private val categoryManager: CategoryManager = CategoryManagerImpl(categories)
 
     fun add() {
         val amount = readAmount()
         val transactionType = selectTransactionType()
-        val category = select()
+        val category = CategoryHelper.select()
 
         print("Enter description (optional): ")
         val description = readlnOrNull()
@@ -51,7 +47,7 @@ object TransactionHelper {
 
         println("Enter the number of the transaction you want to edit:")
         val existingTransaction = transactions[validateIndexWithinRange(transactions.size)]
-        var updated = existingTransaction.copy()
+        var updatedTransaction = existingTransaction.copy()
         var choice: Int? = null
         while (true) {
             println(
@@ -69,27 +65,25 @@ object TransactionHelper {
 
             when (choice) {
                 1 -> {
-                    updated = updated.copy(amount = readAmount())
-                    updateTransactionField(existingTransaction, updated)
+                    updatedTransaction = updatedTransaction.copy(amount = readAmount())
+                    updateTransactionField(existingTransaction, updatedTransaction)
                 }
 
                 2 -> {
-                    updated = updated.copy(transactionType = selectTransactionType())
-                    updateTransactionField(existingTransaction, updated)
+                    updatedTransaction = updatedTransaction.copy(transactionType = selectTransactionType())
+                    updateTransactionField(existingTransaction, updatedTransaction)
                 }
 
                 3 -> {
-                    val newCategory = select()
-                    categoryManager.update(existingTransaction.category.id, readlnOrNull().toString())
-                    updated = updated.copy(category = newCategory)
-                    updateTransactionField(existingTransaction, updated)
+                    updatedTransaction = updatedTransaction.copy(category = CategoryHelper.select())
+                    updateTransactionField(existingTransaction, updatedTransaction)
                 }
 
                 4 -> {
                     print("Enter new description: ")
                     val newDescription = readlnOrNull()?.trim()
-                    updated = updated.copy(description = newDescription)
-                    updateTransactionField(existingTransaction, updated)
+                    updatedTransaction = updatedTransaction.copy(description = newDescription)
+                    updateTransactionField(existingTransaction, updatedTransaction)
                 }
 
                 5 -> {

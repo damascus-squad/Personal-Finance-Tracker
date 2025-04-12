@@ -31,7 +31,7 @@ class TransactionMangerImpl(
 
         if (index != -1) {
             transactions[index] = transaction
-            storage.save(transactions)
+            storage.save(transactions, overwrite = true)
             return true
         }
 
