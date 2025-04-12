@@ -1,12 +1,15 @@
 package categoryFeature.feature
 
 import categoryFeature.model.Category
+import org.example.Transaction
+import org.example.storage.FileStorage
+import org.example.storage.FileStorageFactory
 import java.util.*
 
 
-class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
+class CategoryManagerImpl(initialCategories: List<String>, private val storage: FileStorage<Category>) : CategoryManager {
 
-    private val categories = initialCategories.toCategoryList()
+    private var categories = initialCategories.toCategoryList()
 
     override fun add(name: String): Boolean {
         val lowerName = name.lowercase(Locale.getDefault())
@@ -15,17 +18,18 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
         } else {
             val newId = categories.size + 1
             categories.add(Category(newId, lowerName))
+            storage.save(categories, overwrite = true)
             true
         }
     }
 
     override fun update(id: Int, newName: String): Boolean {
-        val lowerNew = newName.lowercase(Locale.getDefault())
         val category = categories.find { it.id == id }
 
         return if (category != null) {
             val index = categories.indexOf(category)
-            categories[index] = category.copy(name = lowerNew)
+            categories[index] = category.copy(name = newName)
+            storage.save(categories, overwrite = true)
             true
         } else {
             false
@@ -36,6 +40,7 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
         val index = id - 1
         return if (index in categories.indices) {
             categories.removeAt(index)
+            storage.save(categories, overwrite = true)
             true
         } else {
             false
@@ -47,6 +52,7 @@ class CategoryManagerImpl(initialCategories: List<String>) : CategoryManager {
     }
 
     override fun getAll(): List<Category> {
+        categories = storage.load().toMutableList()
         return categories.mapIndexed { index, cat ->
             cat.copy(id = index + 1)
         }

@@ -1,9 +1,13 @@
 package categoryFeature.feature
 
 import categoryFeature.model.Category
+import org.example.storage.FileStorageFactory
 
 object CategoryHelper {
-    private val categoryManager: CategoryManager = CategoryManagerImpl(listOf("Food", "Transport", "Entertainment"))
+    private val categoryManager: CategoryManager = CategoryManagerImpl(
+        listOf("Food", "Transport", "Entertainment"),
+        storage = FileStorageFactory.create("categories.json")
+    )
 
 
     fun add() {
@@ -25,6 +29,8 @@ object CategoryHelper {
     fun update() {
         val categories = categoryManager.getAll()
         categories.forEach { println("[${it.id}] ${it.name}") }
+        println("[${categories.size + 1}] Custom Category")
+        println()
 
         print("Enter the category ID to update: ")
         val idToUpdate = readlnOrNull()?.toIntOrNull()
@@ -101,20 +107,23 @@ object CategoryHelper {
         categories.forEach { category ->
             println("${category.id} - ${category.name}")
         }
-        println("${categories.size+1} - Custom Category")
-
+        println("${categories.size + 1} - Custom Category")
         println("🔽 Select a category by entering its number, or Enter Custom Category")
         var selectedId = readlnOrNull()?.toIntOrNull()
 
-        while (selectedId == null || selectedId > categories.size+1) {
+        while (selectedId == null || selectedId > categories.size + 1) {
             println("❌ Invalid selection. Please enter a valid category number:")
             selectedId = readlnOrNull()?.toIntOrNull()
         }
-        if (selectedId == (categories.size+1)) add()
+        if (selectedId == (categories.size + 1)) add()
 
-        val selectedCategory = categoryManager.getById(selectedId)!!
-        println("✅ You selected: ${selectedCategory.name}")
-        return selectedCategory
+
+        val selectedCategory = categoryManager.getById(selectedId)
+        if (selectedCategory == null) {
+            println("❌ Invalid selection. Please enter a valid category number:")
+        }
+        println("✅ You selected: ${selectedCategory?.name}")
+        return selectedCategory!!
     }
 
     private fun isValidCategoryName(name: String): Boolean {
