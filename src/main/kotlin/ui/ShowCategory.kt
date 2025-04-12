@@ -4,14 +4,12 @@ import org.example.features.category.CategoryHelper
 import org.example.features.category.CategoryManagerImpl
 import org.example.model.Operation
 
-fun main() {
+fun showCategories() {
     val categoryManager = CategoryManagerImpl(listOf("food", "transport", "entertainment"))
-
     while (true) {
         println("\n=== Category List ===")
         val categories = categoryManager.getCategories()
         categories.forEach { println("[${it.id}] ${it.name}") }
-
         val customOptionNumber = categories.size + 1
         println("[$customOptionNumber] Custom Category")
         println("[0] Exit")

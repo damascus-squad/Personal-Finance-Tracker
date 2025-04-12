@@ -14,6 +14,7 @@ object TransactionHelper {
     fun addTransaction(manager: TransactionManager) {
         val amount = readAmount()
         val transactionType = selectTransactionType()
+
         CategoryHelper.displayCategories(categoryManager)
 
         val category = CategoryHelper.addCategory(categoryManager)

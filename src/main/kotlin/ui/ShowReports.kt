@@ -1,13 +1,13 @@
 package ui
 
-import org.example.Transaction
 import org.example.features.summary.TransactionSummary
+import org.example.model.Transaction
 import org.example.model.TransactionReport
 import kotlin.collections.component1
 import kotlin.collections.component2
 
 
-fun createReport(transactions: List<Transaction>) {
+fun showReports(transactions: List<Transaction>) {
     println("Welcome to the Personal Finance Tracker")
 
     while (true) {
@@ -35,6 +35,7 @@ fun createReport(transactions: List<Transaction>) {
                     ).getByMonth(year, month)
                 )
             }
+
             "2" -> {
                 // Get and validate year
                 val year = getValidatedInput("Enter year: ") { input ->

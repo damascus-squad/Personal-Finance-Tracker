@@ -1,18 +1,12 @@
 package ui
 
-import org.example.features.feature.TransactionHelper.addTransaction
-import org.example.features.feature.TransactionHelper.deleteTransaction
-import org.example.features.feature.TransactionHelper.displayAllTransactions
-import org.example.features.feature.TransactionHelper.editTransaction
-import org.example.features.feature.TransactionManager
-import org.example.features.feature.TransactionMangerImp
+import features.transaction.TransactionHelper.addTransaction
+import features.transaction.TransactionHelper.deleteTransaction
+import features.transaction.TransactionHelper.displayAllTransactions
+import features.transaction.TransactionHelper.editTransaction
+import features.transaction.TransactionManager
 
-fun main() {
-    val manger = TransactionMangerImp()
-    transactionCLI(manger)
-}
-
-fun transactionCLI(manager: TransactionManager) {
+fun showTransactions(manager: TransactionManager) {
     while (true) {
         println(
             """
@@ -21,8 +15,7 @@ fun transactionCLI(manager: TransactionManager) {
     2. Edit Transaction
     3. Delete Transaction
     4. List All Transactions
-    5. Create Report
-    6. Exit
+    5. Exit
     ==================================
           """.trimMargin()
         )
@@ -32,9 +25,8 @@ fun transactionCLI(manager: TransactionManager) {
             "2" -> editTransaction(manager)
             "3" -> deleteTransaction(manager)
             "4" -> displayAllTransactions(manager)
-            "5" -> createReport(manager.getAllTransactions())
-            "6" -> {
-                println("Exiting... Goodbye!")
+            "5" -> {
+                println("Exit")
                 return
             }
 
