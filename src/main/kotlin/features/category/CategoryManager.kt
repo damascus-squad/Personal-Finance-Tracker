@@ -1,6 +1,6 @@
-package categoryFeature.feature
+package org.example.features.category
 
-import categoryFeature.model.Category
+import org.example.model.Category
 
 interface CategoryManager {
     fun add(name: String): Boolean

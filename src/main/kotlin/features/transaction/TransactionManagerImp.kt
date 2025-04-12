@@ -1,4 +1,4 @@
-package org.example.feature
+package org.example.features.feature
 
 import org.example.Transaction
 import java.util.UUID

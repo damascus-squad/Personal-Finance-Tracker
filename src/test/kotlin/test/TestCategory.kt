@@ -1,6 +1,6 @@
 package test
 
-import categoryFeature.feature.CategoryManagerImpl
+import org.example.features.category.CategoryManagerImpl
 import util.CheckTest
 import util.check
 

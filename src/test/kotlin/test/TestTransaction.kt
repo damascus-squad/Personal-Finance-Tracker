@@ -1,7 +1,7 @@
 package org.example
 
-import categoryFeature.model.Category
-import org.example.feature.TransactionMangerImp
+import org.example.model.Category
+import org.example.features.feature.TransactionMangerImp
 import util.CheckTest
 import util.check
 import util.checkList

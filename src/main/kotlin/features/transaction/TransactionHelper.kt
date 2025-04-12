@@ -1,8 +1,8 @@
-package org.example.feature
+package org.example.features.feature
 
-import categoryFeature.feature.CategoryHelper
-import categoryFeature.feature.CategoryManagerImpl
-import categoryFeature.model.Category
+import org.example.features.category.CategoryHelper
+import org.example.features.category.CategoryManagerImpl
+import org.example.model.Category
 import org.example.Transaction
 import org.example.TransactionType
 import java.time.LocalDateTime

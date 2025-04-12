@@ -1,6 +1,6 @@
 package org.example
 
-import categoryFeature.model.Category
+import org.example.model.Category
 import java.time.LocalDateTime
 import java.util.UUID
 
