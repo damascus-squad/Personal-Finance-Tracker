@@ -1,12 +1,10 @@
 package ui
 
 import model.Transaction
-import org.example.ui.TerminalColor
 import org.example.features.summary.TransactionSummary
-import org.example.model.TransactionReport
+import org.example.ui.TerminalColor
+import org.example.ui.printColoredTable
 import org.example.ui.withStyle
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 
 fun runReportsCLI(transactions: List<Transaction>) {
@@ -30,14 +28,12 @@ fun runReportsCLI(transactions: List<Transaction>) {
 
                 // Get and validate month (1-12)
                 val month = getValidatedInput("Enter month (1-12): ") { input ->
-                    input.toIntOrNull()?.let { it in 1..12 } ?: false
+                    input.toIntOrNull()?.let { it in 1..12 } == true
                 }
 
-                printReport(
-                    TransactionSummary(
-                        transactions = transactions
-                    ).getByMonth(year, month)
-                )
+                TransactionSummary(transactions = transactions)
+                    .getByMonth(year, month)
+                    .printColoredTable()
             }
 
             "2" -> {
@@ -46,10 +42,9 @@ fun runReportsCLI(transactions: List<Transaction>) {
                     input.toIntOrNull()?.let { it > 0 } == true
                 }
 
-                printReport(
-                    TransactionSummary(
-                        transactions = transactions
-                    ).getByYear(year))
+                TransactionSummary(transactions = transactions)
+                    .getByYear(year)
+                    .printColoredTable()
             }
             "3" -> {
                 println("\nExiting application. Goodbye!".withStyle(TerminalColor.Blue))
@@ -57,18 +52,5 @@ fun runReportsCLI(transactions: List<Transaction>) {
             }
             else -> println("\nInvalid option, try again.".withStyle(TerminalColor.Red))
         }
-    }
-}
-
-fun printReport(transactionReport: TransactionReport) {
-    println("Income: ${transactionReport.income}")
-    println("Expenses: ${transactionReport.expenses}")
-    println("Balance: ${transactionReport.getBalance()}")
-    println("###########################################")
-    println("Categories:")
-    transactionReport.categorySummaries.forEach { (category, categorySummary) ->
-        println("\t${category}:")
-        println("\t\tAmount: ${categorySummary.amount}")
-        println("\t\tTransactions Count: ${categorySummary.transactionsCount}")
     }
 }

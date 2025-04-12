@@ -22,7 +22,7 @@ fun mainCLI() {
             "Transactions",
             "Categories",
             "Reports",
-            "Exit",
+            "Exit"
         ).forEachIndexed { index, item ->
             println("${index + 1}. $item".withStyle(TerminalColor.entries.random()))
         }

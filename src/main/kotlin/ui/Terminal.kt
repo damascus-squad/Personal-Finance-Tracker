@@ -2,6 +2,9 @@ package org.example.ui
 
 import model.Transaction
 import model.TransactionType
+import org.example.model.Category
+import org.example.model.CategorySummary
+import org.example.model.TransactionReport
 import java.time.format.DateTimeFormatter
 
 
@@ -20,7 +23,6 @@ enum class TerminalColor(val code: String) {
 fun String.withStyle(color: TerminalColor) = color.wrap(this)
 
 fun List<Transaction>.printColoredTable() {
-    enableWindowsAnsi()
     val headers = listOf(
         "ID",
         "Amount",
@@ -44,6 +46,39 @@ fun List<Transaction>.printColoredTable() {
     printTable(headers, data)
 }
 
+fun TransactionReport.printColoredTable() {
+    val headers = listOf(
+        "Income",
+        "Expense",
+        "Balance"
+    )
+
+    val data = listOf(
+        income,
+        expenses,
+        getBalance()
+    )
+    printTable(headers, listOf(data))
+    categorySummaries.printColoredTable()
+}
+
+fun Map<Category, CategorySummary>.printColoredTable() {
+    val headers = listOf(
+        "Category",
+        "Amount",
+        "Transactions Count"
+    )
+
+    val data = map {
+        listOf(
+            it.key.name,
+            it.value.amount,
+            it.value.transactionsCount
+        )
+    }
+    printTable(headers, data)
+}
+
 fun enableWindowsAnsi() {
     if (System.getProperty("os.name").contains("Windows"))
         System.setProperty("jansi.passthrough", "true")
@@ -53,7 +88,6 @@ fun printTable(headers: List<String>, data: List<List<Any>>) {
     val colWidths = headers.mapIndexed { i, header ->
         maxOf(header.length, data.maxOfOrNull { row -> row[i].toString().length } ?: 0)
     }
-
 
     val lineLength = (colWidths.sum() + colWidths.size * 3) - 1
     val footer = " " + "—".repeat(lineLength)
