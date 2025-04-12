@@ -1,6 +1,7 @@
 package test
 
-import org.example.features.category.CategoryManagerImpl
+import features.category.CategoryManagerImpl
+import org.example.storage.FileStorageFactory
 import util.CheckTest
 import util.check
 
@@ -10,7 +11,10 @@ class TestCategory {
     private lateinit var  categoryManagerImpl: CategoryManagerImpl
 
     init {
-        categoryManagerImpl = CategoryManagerImpl(listOf("Food", "Transport", "Entertainment"))
+        categoryManagerImpl = CategoryManagerImpl(
+            initialCategories = listOf("Food", "Transport", "Entertainment"),
+            storage = FileStorageFactory.create("categories.json")
+        )
     }
     @CheckTest
     fun testAddCategory(): Boolean {

@@ -1,12 +1,8 @@
 package ui
 
-import features.transaction.TransactionHelper.addTransaction
-import features.transaction.TransactionHelper.deleteTransaction
-import features.transaction.TransactionHelper.displayAllTransactions
-import features.transaction.TransactionHelper.editTransaction
-import features.transaction.TransactionManager
+import features.transaction.TransactionHelper
 
-fun showTransactions(manager: TransactionManager) {
+fun runTransactionsCLI() {
     while (true) {
         println(
             """
@@ -21,12 +17,12 @@ fun showTransactions(manager: TransactionManager) {
         )
         print("Choose an option: ")
         when (readlnOrNull()?.trim()) {
-            "1" -> addTransaction(manager)
-            "2" -> editTransaction(manager)
-            "3" -> deleteTransaction(manager)
-            "4" -> displayAllTransactions(manager)
+            "1" -> TransactionHelper.add()
+            "2" -> TransactionHelper.edit()
+            "3" -> TransactionHelper.delete()
+            "4" -> TransactionHelper.displayAll()
             "5" -> {
-                println("Exit")
+                println("Exiting... Goodbye!")
                 return
             }
 
@@ -36,8 +32,6 @@ fun showTransactions(manager: TransactionManager) {
         readlnOrNull()
     }
 }
-
-
 
 /**
  * Gets user input and validates it using the provided validation function.

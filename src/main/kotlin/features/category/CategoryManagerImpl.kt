@@ -1,13 +1,13 @@
-package categoryFeature.feature
+package features.category
 
-import categoryFeature.model.Category
-import org.example.Transaction
+import org.example.features.category.CategoryManager
+import org.example.model.Category
 import org.example.storage.FileStorage
-import org.example.storage.FileStorageFactory
 import java.util.*
 
 
-class CategoryManagerImpl(initialCategories: List<String>, private val storage: FileStorage<Category>) : CategoryManager {
+class CategoryManagerImpl(initialCategories: List<String>, private val storage: FileStorage<Category>) :
+    CategoryManager {
 
     private var categories = initialCategories.toCategoryList()
 

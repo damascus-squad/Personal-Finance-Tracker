@@ -1,30 +1,32 @@
 package org.example
 
-import org.example.feature.*
+import features.transaction.TransactionHelper
+import org.example.ui.runCategoriesCLI
+import ui.runReportsCLI
+import ui.runTransactionsCLI
 
 fun main() {
-    runCLI()
+    mainCLI()
 }
-fun runCLI() {
+
+fun mainCLI() {
     while (true) {
         println(
             """
     ===== Personal Finance CLI=====
-    1. Add Transaction
-    2. Edit Transaction
-    3. Delete Transaction
-    4. List All Transactions
-    5. Exit
+    1. Transactions
+    2. Categories
+    3. Reports
+    4. Exit
     ==================================
           """.trimMargin()
         )
         print("Choose an option: ")
         when (readlnOrNull()?.trim()) {
-            "1" -> TransactionHelper.add()
-            "2" -> TransactionHelper.edit()
-            "3" -> TransactionHelper.delete()
-            "4" -> TransactionHelper.displayAll()
-            "5" -> {
+            "1" -> runTransactionsCLI()
+            "2" -> runCategoriesCLI()
+            "3" -> runReportsCLI(TransactionHelper.getAll())
+            "4" -> {
                 println("Exiting... Goodbye!")
                 return
             }

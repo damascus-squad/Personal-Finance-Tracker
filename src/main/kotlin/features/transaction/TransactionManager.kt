@@ -1,6 +1,7 @@
 package features.transaction
 
-import org.example.model.*
+
+import model.Transaction
 import java.util.UUID
 
 interface TransactionManager {

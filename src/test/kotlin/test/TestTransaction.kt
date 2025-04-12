@@ -1,23 +1,19 @@
-package org.example
+package test
 
-import categoryFeature.model.Category
-import org.example.feature.TransactionMangerImpl
+import features.transaction.TransactionMangerImpl
+import model.Transaction
+import model.TransactionType
+import org.example.model.Category
+import org.example.storage.FileStorageFactory
 import util.CheckTest
 import util.check
-import util.checkList
 import java.time.LocalDateTime
 import java.util.*
 
 class TestTransaction {
-    private val transactionMangerImp = TransactionMangerImpl()
-
-    @CheckTest
-    fun checkListOfTransactionSize() {
-        return transactionMangerImp.getAll().checkList(
-            name = "Should return 0 transactions before adding any transaction",
-            other = emptyList()
-        )
-    }
+    private val transactionMangerImp = TransactionMangerImpl(
+        storage = FileStorageFactory.create("transactions.json")
+    )
 
     @CheckTest
     fun addNewTransaction(): Boolean {

@@ -1,6 +1,7 @@
 package org.example.features.category
 
-import categoryFeature.model.Category
+import features.category.CategoryManagerImpl
+import org.example.model.Category
 import org.example.storage.FileStorageFactory
 
 object CategoryHelper {
@@ -90,6 +91,10 @@ object CategoryHelper {
         } else {
             println("Invalid input.")
         }
+    }
+
+    fun getAll(): List<Category> {
+        return categoryManager.getAll()
     }
 
     fun select(): Category {

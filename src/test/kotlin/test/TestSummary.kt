@@ -1,13 +1,14 @@
 package test
 
-import org.example.model.*
-import org.example.model.TransactionReport
+import model.Transaction
+import model.TransactionType
 import org.example.features.summary.TransactionSummary
-import org.example.model.CategorySummary
-import java.time.LocalDateTime
 import org.example.model.Category
+import org.example.model.CategorySummary
+import org.example.model.TransactionReport
 import util.CheckTest
 import util.check
+import java.time.LocalDateTime
 import java.util.*
 
 class TestSummary {

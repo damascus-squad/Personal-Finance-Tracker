@@ -1,36 +1,50 @@
-package categoryFeature
+package org.example.ui
 
-import categoryFeature.feature.CategoryHelper
-import categoryFeature.feature.CategoryManagerImpl
-import categoryFeature.model.Operation
+import org.example.features.category.CategoryHelper
 
-fun main() {
-//    while (true) {
-//        println("\n=== Category List ===")
-//        val categories = CategoryHelper
-//        categories.forEach { println("[${it.id}] ${it.name}") }
-//
-//        val customOptionNumber = categories.size + 1
-//        println("[$customOptionNumber] Custom Category")
-//        println("[0] Exit")
-//
-//        print("Please select a category or choose 'Custom': ")
-//        val userInput = readlnOrNull()?.toIntOrNull()
-//
-//        when (userInput) {
-//            0 -> {
-//                println("Exiting program. Goodbye!")
-//                return
-//            }
-//
-//            in 1..categories.size -> {
-//                val selectedCategory = categories[userInput?.minus(1)!!]
-//                println("You selected: ${selectedCategory.name}")
-//            }
+fun runCategoriesCLI() {
+    while (true) {
+
+        println("\n=== Category Operations ===")
+        println(
+            """
+    1. Add Category
+    2. Edit Category
+    3. Delete Category
+    4. List All Categories
+    5. Exit
+    ==================================
+          """.trimMargin()
+        )
+
+
+        when (val userInput = readlnOrNull()?.toIntOrNull()) {
+
+            1 -> {
+                CategoryHelper.add()
+            }
+
+            2 -> {
+                CategoryHelper.update()
+            }
+
+            3 -> {
+                CategoryHelper.delete()
+            }
+
+            4 -> {
+                val categories = CategoryHelper.getAll()
+                categories.forEach { println("[${it.id}] ${it.name}") }
+            }
+
+            5 -> {
+                return
+            }
+
+
 //
 //            customOptionNumber -> {
 //                while (true) {
-//                    println("\n=== Category Operations ===")
 //                    Operation.entries.forEachIndexed { index, operation ->
 //                        println("${index + 1}. ${operation.description}")
 //                    }
@@ -55,8 +69,9 @@ fun main() {
 //                    }
 //                }
 //            }
-//
-//            else -> println("Invalid input. Please select a valid number.")
-//        }
-//    }
+
+            else -> println("Invalid input. Please select a valid number.")
+        }
+    }
 }
+

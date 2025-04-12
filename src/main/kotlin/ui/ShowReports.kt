@@ -1,15 +1,13 @@
 package ui
 
+import model.Transaction
 import org.example.features.summary.TransactionSummary
-import org.example.model.Transaction
 import org.example.model.TransactionReport
 import kotlin.collections.component1
 import kotlin.collections.component2
 
 
-fun showReports(transactions: List<Transaction>) {
-    println("Welcome to the Personal Finance Tracker")
-
+fun runReportsCLI(transactions: List<Transaction>) {
     while (true) {
         println("\n[1] Monthly Report")
         println("[2] Yearly Report")

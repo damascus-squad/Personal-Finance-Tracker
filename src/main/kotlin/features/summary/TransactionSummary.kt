@@ -1,6 +1,10 @@
 package org.example.features.summary
 
-import org.example.model.*
+import model.Transaction
+import model.TransactionType
+import org.example.model.CategorySummary
+import org.example.model.TransactionReport
+
 
 class TransactionSummary(
     private val transactions: List<Transaction>
