@@ -1,7 +1,8 @@
 package org.example
 
+import org.example.model.*
 import org.example.model.Category
-import org.example.features.feature.TransactionMangerImp
+import features.transaction.TransactionMangerImp
 import util.CheckTest
 import util.check
 import util.checkList
@@ -22,7 +23,8 @@ class TestTransaction {
     fun addNewTransaction():Boolean{
         return check(
             name = "Should return true when adding a new transaction",
-            transactionMangerImp.addTransaction(Transaction(
+            transactionMangerImp.addTransaction(
+                Transaction(
                 id =  UUID.randomUUID(),
                 amount = 100.0,
                 date = LocalDateTime.now(),

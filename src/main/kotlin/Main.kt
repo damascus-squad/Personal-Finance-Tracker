@@ -1,11 +1,12 @@
 package org.example
 
-import org.example.features.feature.TransactionHelper.addTransaction
-import org.example.features.feature.TransactionHelper.deleteTransaction
-import org.example.features.feature.TransactionHelper.displayAllTransactions
-import org.example.features.feature.TransactionHelper.editTransaction
-import org.example.features.feature.TransactionManager
-import org.example.features.feature.TransactionMangerImp
+import org.example.model.*
+import features.transaction.TransactionHelper.addTransaction
+import features.transaction.TransactionHelper.deleteTransaction
+import features.transaction.TransactionHelper.displayAllTransactions
+import features.transaction.TransactionHelper.editTransaction
+import features.transaction.TransactionManager
+import features.transaction.TransactionMangerImp
 import org.example.features.summary.TransactionSummary
 import org.example.model.TransactionReport
 

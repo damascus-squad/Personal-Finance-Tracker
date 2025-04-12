@@ -1,8 +1,7 @@
-package org.example
+package org.example.model
 
-import org.example.model.Category
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class Transaction(
     val id: UUID,

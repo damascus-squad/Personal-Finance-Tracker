@@ -1,10 +1,9 @@
-package org.example.features.feature
+package features.transaction
 
 import org.example.features.category.CategoryHelper
 import org.example.features.category.CategoryManagerImpl
 import org.example.model.Category
-import org.example.Transaction
-import org.example.TransactionType
+import org.example.model.*
 import java.time.LocalDateTime
 import java.util.*
 

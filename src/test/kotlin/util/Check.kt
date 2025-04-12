@@ -1,6 +1,6 @@
 package util
 
-import org.example.Transaction
+import org.example.model.*
 
 
 internal fun check(

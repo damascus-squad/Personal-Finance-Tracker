@@ -1,7 +1,5 @@
 package org.example.features.summary
 
-import org.example.Transaction
-import org.example.TransactionType
 import org.example.model.*
 
 class TransactionSummary(
