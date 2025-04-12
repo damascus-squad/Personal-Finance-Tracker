@@ -1,4 +1,4 @@
-package org.example
+package ui
 
 import org.example.features.category.CategoryHelper
 import org.example.features.category.CategoryManagerImpl
