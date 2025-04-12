@@ -8,7 +8,7 @@ data class Transaction(
     var amount: Double,
     val transactionType: TransactionType,
     var date: LocalDateTime,
-    var category: String,
+    var category: Category,
     var description: String?
 )
 
@@ -16,4 +16,15 @@ enum class TransactionType {
     INCOME,
     EXPENSE
 }
+
+
+data class Category(
+    val id: Int,
+    val name: String
+)
+
+
+
+
+
 

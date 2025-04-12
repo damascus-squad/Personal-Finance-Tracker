@@ -1,11 +1,28 @@
 package org.example.feature
+import org.example.Category
 import org.example.Transaction
 import org.example.TransactionType
 import java.time.LocalDateTime
 import java.util.*
 
 
+val categories = listOf(
+    Category(1, "Food"),
+    Category(2, "Transport"),
+    Category(3, "Entertainment"),
+    Category(4, "Bills"),
+    Category(5, "Shopping"),
+    Category(5, "Health"),
+    Category(6, "Salary"),
+    Category(7, "Other"),
+    Category(8, "Custom")
+)
+
+
 fun runCLI(service: TransactionService){
+
+
+
     while (true) {
         println(
             """
@@ -43,7 +60,7 @@ fun addTransaction(service: TransactionService) {
         print("Enter amount (must be positive): ")
         amount = readlnOrNull()?.toDoubleOrNull()
         if (amount == null || amount <= 0) {
-            println("❌ Invalid amount. Please enter a positive number.")
+            print("❌ Invalid amount. Please enter a positive number : ")
         }
     }
 
@@ -56,16 +73,29 @@ fun addTransaction(service: TransactionService) {
         when (readlnOrNull()?.trim()) {
             "1" -> transactionType = TransactionType.INCOME
             "2" -> transactionType = TransactionType.EXPENSE
-            else -> println("❌ Invalid choice. Please select 1 or 2.")
+            else -> print("❌ Invalid choice. Please select 1 or 2 : ")
         }
     }
 
-   print("Enter category: ")
-    var category = readln()
-    while (category.isBlank()) {
-        println("❌ Category is required. Please Enter Category")
-        category = readln()
+
+
+
+    println("List of categories: ")
+    categories.forEachIndexed { index, category ->
+        println("${index + 1}. ${category.name}")
     }
+    print("Enter your category number: ")
+
+    var categoryIdx = readlnOrNull()?.toIntOrNull()?.minus(1)
+
+    while (categoryIdx == null || categoryIdx !in categories.indices) {
+        print("❌ invalid Category, Please try again : ")
+        categoryIdx = readlnOrNull()?.toIntOrNull()?.minus(1)
+    }
+    val category = categories[categoryIdx]
+
+
+
 
     print("Enter description (optional): ")
     val description = readlnOrNull()
@@ -149,13 +179,23 @@ fun editTransaction(service: TransactionService) {
                 }
             }
             3 -> {
-                print("Enter new category: ")
-                val newCategory = readlnOrNull()?.trim()
-                if (!newCategory.isNullOrEmpty()) {
-                    updated = updated.copy(category = newCategory)
-                    service.updateTransaction(existingTransaction.id, updated)
-                    println("✅ Category updated.")
-                } else println("❌ Invalid category.")
+                println("List of categories: ")
+                categories.forEachIndexed { index, category ->
+                    println("${index + 1}. ${category.name}")
+                }
+                print("Enter your category number: ")
+
+                var categoryIdx = readlnOrNull()?.toIntOrNull()?.minus(1)
+
+                while (categoryIdx == null || categoryIdx !in categories.indices) {
+                    println("❌ Category is required. Please Enter Category")
+                    categoryIdx = readlnOrNull()?.toIntOrNull()?.minus(1)
+                }
+                val category = categories[categoryIdx]
+
+                updated = updated.copy(category = category)
+                service.updateTransaction(existingTransaction.id, updated)
+                println("✅ Category updated.")
             }
             4 -> {
                 print("Enter new description: ")
@@ -205,8 +245,6 @@ fun deleteTransaction(service: TransactionService) {
 }
 
 
-
-
 fun displayAllTransactions(service: TransactionService) {
     val transactions = service.getAllTransactions()
     if (transactions.isEmpty()) {
@@ -215,6 +253,6 @@ fun displayAllTransactions(service: TransactionService) {
     }
     println("=== All Transactions ===")
     transactions.forEachIndexed {index, transaction->
-        println("${index+1}. ID: ${transaction.id}. | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category} | Date: ${transaction.date} | Desc: ${transaction.description}")
+        println("${index+1}. ID: ${transaction.id}. | Amount: ${transaction.amount} | Type: ${transaction.transactionType} | Category: ${transaction.category.name} | Date: ${transaction.date} | Desc: ${transaction.description}")
     }
 }
