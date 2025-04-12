@@ -4,7 +4,8 @@ import util.runAllCheckTests
 fun main() {
     val isAllTestCasedPassed = runAllCheckTests(
         listOf(
-            TestCategory()
+            TestCategory(),
+            TestCategory(),
         )
     )
 
